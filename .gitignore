@@ -6,3 +6,5 @@ venv/
 !.env.example
 .DS_Store
 Thumbs.db
+Duralux-admin-1.0.0/
+frontend/
