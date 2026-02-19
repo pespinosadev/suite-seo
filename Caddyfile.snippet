@@ -1,0 +1,9 @@
+tu-dominio.com {
+    handle /api/* {
+        reverse_proxy seo_api:8000
+    }
+
+    handle {
+        reverse_proxy n8n:5678
+    }
+}

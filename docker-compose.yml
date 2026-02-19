@@ -1,0 +1,36 @@
+services:
+  seo_db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - seo_postgres:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - internal
+
+  seo_api:
+    build: ./backend
+    container_name: seo_api
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@seo_db:5432/${POSTGRES_DB}
+      SECRET_KEY: ${SECRET_KEY}
+      CORS_ORIGINS: ${CORS_ORIGINS}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-60}
+    depends_on:
+      - seo_db
+    networks:
+      - internal
+      - web
+    restart: unless-stopped
+
+volumes:
+  seo_postgres:
+
+networks:
+  internal:
+    driver: bridge
+  web:
+    external: true
