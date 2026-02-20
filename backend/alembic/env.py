@@ -5,6 +5,8 @@ from alembic import context
 from app.core.config import settings
 from app.core.database import Base
 import app.modules.auth.models  # noqa: F401
+import app.modules.domains.models  # noqa: F401
+import app.modules.topics.models   # noqa: F401
 
 config = context.config
 if config.config_file_name is not None:
