@@ -25,6 +25,7 @@ services:
       SMTP_PASSWORD: ${SMTP_PASSWORD:-}
       SMTP_FROM: ${SMTP_FROM:-}
       SMTP_AUTH_DOMAIN: ${SMTP_AUTH_DOMAIN:-}
+      SPORTS_API_KEY: ${SPORTS_API_KEY:-}
     depends_on:
       - seo_db
     networks:
