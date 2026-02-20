@@ -127,3 +127,15 @@ async def delete_topic(
     _=Depends(get_current_user),
 ):
     await service.delete_topic(topic_id, db)
+
+
+# ── Email ──────────────────────────────────────────────
+
+@router.post("/send", status_code=status.HTTP_200_OK)
+async def send_email(
+    body: schemas.SendEmailRequest,
+    db: AsyncSession = Depends(get_db),
+    _=Depends(get_current_user),
+):
+    await service.send_topics_email(body.recipients, body.subject, body.html_body, db)
+    return {"ok": True}

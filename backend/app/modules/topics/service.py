@@ -1,3 +1,8 @@
+import asyncio
+import datetime
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from typing import Optional
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -226,4 +231,53 @@ async def delete_topic(topic_id: int, db: AsyncSession) -> None:
     if not topic:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Tema no encontrado")
     await db.delete(topic)
+    await db.commit()
+
+
+# ── Email ──────────────────────────────────────────────
+
+async def send_topics_email(
+    recipients: list[str],
+    subject: str,
+    html_body: str,
+    db: AsyncSession,
+) -> None:
+    from app.core.config import settings
+
+    if not settings.SMTP_HOST:
+        raise HTTPException(
+            status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="SMTP no configurado en el servidor. Añade SMTP_HOST al .env del VPS.",
+        )
+
+    from_addr = settings.SMTP_FROM or settings.SMTP_USER
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = subject
+    msg["From"] = from_addr
+    msg["To"] = ", ".join(recipients)
+    msg.attach(MIMEText(html_body, "html", "utf-8"))
+
+    host, port = settings.SMTP_HOST, settings.SMTP_PORT
+    user, password = settings.SMTP_USER, settings.SMTP_PASSWORD
+
+    def _send() -> None:
+        with smtplib.SMTP(host, port, timeout=15) as smtp:
+            smtp.ehlo()
+            smtp.starttls()
+            smtp.ehlo()
+            if user:
+                smtp.login(user, password)
+            smtp.sendmail(from_addr, recipients, msg.as_bytes())
+
+    try:
+        await asyncio.get_event_loop().run_in_executor(None, _send)
+    except smtplib.SMTPException as exc:
+        raise HTTPException(status.HTTP_502_BAD_GATEWAY, detail=f"Error SMTP: {exc}")
+
+    # Mark all draft topics as sent
+    now = datetime.datetime.now(datetime.timezone.utc)
+    result = await db.execute(select(DailyTopic).where(DailyTopic.is_draft == True))
+    for topic in result.scalars().all():
+        topic.is_draft = False
+        topic.sent_at = now
     await db.commit()

@@ -73,3 +73,9 @@ class DailyTopicOut(BaseModel):
     is_draft: bool
     sent_at: Optional[datetime.datetime]
     model_config = {"from_attributes": True}
+
+
+class SendEmailRequest(BaseModel):
+    recipients: list[str]
+    subject: str
+    html_body: str
