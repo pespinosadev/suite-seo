@@ -510,6 +510,7 @@
     let allCompetitors = {};       // competitors.json: { site_key: [comp1, ...] }
     let allAutoTopics  = [];       // auto-topic templates
     let editingAutoTopicId = null;
+    let duplicateTopicIds = new Set(); // ids marcados como duplicado en esta sesión
 
     /* ── Utilities ── */
     function escHtml(s) {
@@ -793,8 +794,11 @@
             border-radius:20px;padding:.05rem .35rem;color:var(--text-muted)">${topics.length}</span>
         </div>
         ${topics.map(t => `
-          <div class="added-item">
-            <div class="added-item-title">${escHtml(t.title)}</div>
+          <div class="added-item" ${duplicateTopicIds.has(t.id) ? 'style="border-left:3px solid #f59e0b;padding-left:.5rem"' : ''}>
+            <div class="added-item-title">
+              ${escHtml(t.title)}
+              ${duplicateTopicIds.has(t.id) ? '<span style="font-size:.62rem;font-weight:600;background:#fef3c7;color:#92400e;border:1px solid #fcd34d;border-radius:20px;padding:.07rem .38rem;margin-left:.3rem;white-space:nowrap">⚠ dup</span>' : ''}
+            </div>
             <div class="added-item-actions">
               <button class="seo-btn seo-btn-icon" title="Editar" onclick="openEditTopic(${t.id})">
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke-width="2">
@@ -896,6 +900,26 @@
 
       if (!title) { errEl.textContent = 'El título es obligatorio'; errEl.classList.add('show'); return; }
 
+      // Detección de duplicados (solo al añadir, no al editar)
+      let pendingDupId = null;
+      if (!editingTopicId) {
+        let dupMsg = null, matchedTopic = null;
+        if (url) {
+          const byUrl = allTopics.find(t => t.url && t.url.trim() === url);
+          if (byUrl) { dupMsg = 'Esta noticia ya la incluiste'; matchedTopic = byUrl; }
+        }
+        if (!dupMsg) {
+          const tl = title.toLowerCase();
+          const byTitle = allTopics.find(t => t.title.toLowerCase() === tl);
+          if (byTitle) { dupMsg = 'Este tema ya está incluido'; matchedTopic = byTitle; }
+        }
+        if (dupMsg && matchedTopic) {
+          const ok = confirm(`${dupMsg}.\n¿Quieres incluirlo de todas formas?`);
+          if (!ok) return;
+          pendingDupId = matchedTopic.id;
+        }
+      }
+
       btn.disabled = true; btn.textContent = 'Guardando...';
       errEl.textContent = ''; errEl.classList.remove('show');
 
@@ -922,7 +946,12 @@
             body: JSON.stringify(body)
           });
         }
-        if (!res.ok) { const d = await res.json(); errEl.textContent = d.detail || 'Error'; errEl.classList.add('show'); return; }
+        const data = await res.json();
+        if (!res.ok) { errEl.textContent = data.detail || 'Error'; errEl.classList.add('show'); return; }
+        if (pendingDupId !== null) {
+          duplicateTopicIds.add(pendingDupId);
+          duplicateTopicIds.add(data.id);
+        }
         closeModal('modal-topic');
         await fetchTopics();
       } catch(e) { errEl.textContent = 'Error de red'; errEl.classList.add('show'); }
