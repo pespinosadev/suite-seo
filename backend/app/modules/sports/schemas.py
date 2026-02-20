@@ -12,6 +12,10 @@ class SportEventIn(BaseModel):
     canal: Optional[str] = None
 
 
+class BatchEventsRequest(BaseModel):
+    events: list[SportEventIn]
+
+
 class SportEventOut(BaseModel):
     id: int
     day_name: str
