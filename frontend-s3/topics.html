@@ -40,7 +40,7 @@
           </svg>
           Actualizar todo
         </button>
-        <button class="seo-btn seo-btn-outline" onclick="alert('Historial próximamente')">
+        <button class="seo-btn seo-btn-outline" onclick="window.location.href='history.html'">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2" style="stroke:currentColor">
             <circle cx="12" cy="12" r="10"/>
             <polyline points="12 6 12 12 16 14"/>
@@ -128,13 +128,13 @@
           <span style="margin-left:auto;font-size:.72rem;color:var(--text-muted)" id="feed-count">—</span>
         </div>
         <div class="feed-legend">
-          <div class="legend-item">
+          <div class="legend-item" id="legend-short" style="cursor:pointer" title="Filtrar por menos de 4h" onclick="toggleTimeFilter('short')">
             <span class="legend-dot" style="background:#10b981"></span>Menos de 4h
           </div>
-          <div class="legend-item">
+          <div class="legend-item" id="legend-medium" style="cursor:pointer" title="Filtrar por entre 4h y 24h" onclick="toggleTimeFilter('medium')">
             <span class="legend-dot" style="background:#f59e0b"></span>Entre 4h y 24h
           </div>
-          <div class="legend-item">
+          <div class="legend-item" id="legend-long" style="cursor:pointer" title="Filtrar por más de 24h" onclick="toggleTimeFilter('long')">
             <span class="legend-dot" style="background:#ef4444"></span>Más de 24h
           </div>
         </div>
@@ -502,6 +502,7 @@
 
     let allCategories  = [];
     let allTopics      = [];   // added topics (right panel)
+    let activeTimeFilter = null; // 'short' | 'medium' | 'long' | null
     let editingTopicId = null;
     let deletingTopicId = null;
     let pendingSourceTopic = null; // topic from source feed being added
@@ -773,9 +774,19 @@
           uncategorized.push(t);
         }
       });
-      if (uncategorized.length) grouped['Recurrentes'] = uncategorized;
+      if (uncategorized.length) grouped['Sin categoría'] = uncategorized;
 
-      el.innerHTML = Object.entries(grouped).map(([cat, topics]) => `
+      // Sort groups by allCategories order (temporal first, then fixed by display_order)
+      const catOrder = allCategories.map(c => c.name);
+      const sortedEntries = Object.entries(grouped).sort(([a], [b]) => {
+        let ia = catOrder.indexOf(a);
+        let ib = catOrder.indexOf(b);
+        if (ia === -1) ia = catOrder.length;
+        if (ib === -1) ib = catOrder.length;
+        return ia - ib;
+      });
+
+      el.innerHTML = sortedEntries.map(([cat, topics]) => `
         <div class="added-group-label">
           ${escHtml(cat.toUpperCase())}
           <span style="font-size:.65rem;font-weight:600;background:var(--border-light);
@@ -991,7 +1002,25 @@
         filtered = allFeedItems.filter(item => ourKeys.has(item.source));
       }
 
+      // Apply time filter
+      if (activeTimeFilter === 'short') {
+        filtered = filtered.filter(i => (i.age_hours || 0) < 4);
+      } else if (activeTimeFilter === 'medium') {
+        filtered = filtered.filter(i => { const h = i.age_hours || 0; return h >= 4 && h < 24; });
+      } else if (activeTimeFilter === 'long') {
+        filtered = filtered.filter(i => (i.age_hours || 0) >= 24);
+      }
+
       renderFeedItems(filtered);
+    }
+
+    function toggleTimeFilter(filter) {
+      activeTimeFilter = (activeTimeFilter === filter) ? null : filter;
+      ['short', 'medium', 'long'].forEach(f => {
+        const el = document.getElementById('legend-' + f);
+        if (el) el.style.fontWeight = (activeTimeFilter === f) ? '700' : '';
+      });
+      applyFilters();
     }
 
     // permanence = horas de permanencia en hot topics (1–47+)

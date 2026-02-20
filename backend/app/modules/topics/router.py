@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.deps import get_db, get_current_user, require_role
@@ -141,5 +141,28 @@ async def send_email(
         body.recipients, body.subject, body.html_body, db,
         sender_email=current_user.email,
         sender_smtp_password=current_user.smtp_password or "",
+        sender_id=current_user.id,
     )
     return {"ok": True}
+
+
+# ── Email logs ──────────────────────────────────────────────
+
+@router.get("/email-logs", response_model=list[schemas.EmailLogOut])
+async def list_email_logs(
+    db: AsyncSession = Depends(get_db),
+    _=Depends(get_current_user),
+):
+    return await service.list_email_logs(db)
+
+
+@router.get("/email-logs/{log_id}", response_model=schemas.EmailLogDetailOut)
+async def get_email_log(
+    log_id: int,
+    db: AsyncSession = Depends(get_db),
+    _=Depends(get_current_user),
+):
+    log = await service.get_email_log(db, log_id)
+    if not log:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Registro no encontrado")
+    return log

@@ -79,3 +79,26 @@ class SendEmailRequest(BaseModel):
     recipients: list[str]
     subject: str
     html_body: str
+
+
+class EmailLogOut(BaseModel):
+    id: int
+    sent_at: datetime.datetime
+    sender_email: str
+    recipients: list[str]
+    subject: str
+    topic_count: int
+
+    @field_validator("recipients", mode="before")
+    @classmethod
+    def parse_recipients(cls, v):
+        import json
+        if isinstance(v, str):
+            return json.loads(v)
+        return v
+
+    model_config = {"from_attributes": True}
+
+
+class EmailLogDetailOut(EmailLogOut):
+    html_body: str

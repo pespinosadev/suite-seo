@@ -6,6 +6,21 @@ from sqlalchemy.sql import func
 from app.core.database import Base
 
 
+class EmailLog(Base):
+    __tablename__ = "email_logs"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    sent_at: Mapped[datetime.datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    sender_id: Mapped[Optional[int]] = mapped_column(
+        ForeignKey("users.id", ondelete="SET NULL"), nullable=True
+    )
+    sender_email: Mapped[str] = mapped_column(String(255), nullable=False)
+    recipients: Mapped[str] = mapped_column(Text, nullable=False)  # JSON array
+    subject: Mapped[str] = mapped_column(String(500), nullable=False)
+    html_body: Mapped[str] = mapped_column(Text, nullable=False)
+    topic_count: Mapped[int] = mapped_column(Integer, default=0)
+
+
 class AutoTopic(Base):
     __tablename__ = "auto_topics"
 

@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
-from app.modules.topics.models import AutoTopic, TopicCategory, DailyTopic
+from app.modules.topics.models import AutoTopic, TopicCategory, DailyTopic, EmailLog
 from app.modules.topics.schemas import AutoTopicCreate, AutoTopicUpdate, TopicCategoryCreate, DailyTopicCreate, DailyTopicUpdate
 
 AUTO_TOPICS_DEFAULT = [
@@ -248,6 +248,7 @@ async def send_topics_email(
     db: AsyncSession,
     sender_email: str = "",
     sender_smtp_password: str = "",
+    sender_id: Optional[int] = None,
 ) -> None:
     from app.core.config import settings
 
@@ -290,10 +291,38 @@ async def send_topics_email(
     except smtplib.SMTPException as exc:
         raise HTTPException(status.HTTP_502_BAD_GATEWAY, detail=f"Error SMTP: {exc}")
 
+    import json
+
     # Mark all draft topics as sent
     now = datetime.datetime.now(datetime.timezone.utc)
     result = await db.execute(select(DailyTopic).where(DailyTopic.is_draft == True))
-    for topic in result.scalars().all():
+    draft_topics = result.scalars().all()
+    topic_count = len(draft_topics)
+    for topic in draft_topics:
         topic.is_draft = False
         topic.sent_at = now
+
+    # Save email log
+    log = EmailLog(
+        sent_at=now,
+        sender_id=sender_id,
+        sender_email=sender_email,
+        recipients=json.dumps(recipients),
+        subject=subject,
+        html_body=html_body,
+        topic_count=topic_count,
+    )
+    db.add(log)
     await db.commit()
+
+
+async def list_email_logs(db: AsyncSession) -> list[EmailLog]:
+    result = await db.execute(
+        select(EmailLog).order_by(EmailLog.sent_at.desc()).limit(200)
+    )
+    return result.scalars().all()
+
+
+async def get_email_log(db: AsyncSession, log_id: int) -> Optional[EmailLog]:
+    result = await db.execute(select(EmailLog).where(EmailLog.id == log_id))
+    return result.scalar_one_or_none()
