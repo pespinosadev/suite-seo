@@ -5,7 +5,7 @@ from sqlalchemy.orm import selectinload
 
 from app.modules.auth.models import User, Role
 from app.core.security import hash_password
-from app.modules.users.schemas import UserCreate, UserUpdate
+from app.modules.users.schemas import UserCreate, UserUpdate, SetSmtpPasswordRequest
 
 
 async def list_users(db: AsyncSession) -> list[User]:
@@ -80,6 +80,19 @@ async def update_user(user_id: int, data: UserUpdate, current_user_id: int, db: 
         select(User).where(User.id == user_id).options(selectinload(User.role))
     )
     return result.scalar_one()
+
+
+async def set_smtp_password(user_id: int, data: SetSmtpPasswordRequest, db: AsyncSession) -> User:
+    result = await db.execute(
+        select(User).where(User.id == user_id).options(selectinload(User.role))
+    )
+    user = result.scalar_one_or_none()
+    if not user:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Usuario no encontrado")
+    user.smtp_password = data.smtp_password
+    await db.commit()
+    await db.refresh(user)
+    return user
 
 
 async def delete_user(user_id: int, current_user_id: int, db: AsyncSession) -> None:

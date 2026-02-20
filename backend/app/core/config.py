@@ -16,6 +16,9 @@ class Settings(BaseSettings):
     SMTP_USER: str = ""
     SMTP_PASSWORD: str = ""
     SMTP_FROM: str = ""
+    # Domain used to build per-user SMTP auth address, e.g. "renr.grupoepi.es"
+    # Result: pespinosa@prensaiberica.es → pespinosa@renr.grupoepi.es
+    SMTP_AUTH_DOMAIN: str = ""
 
     @property
     def cors_origins_list(self) -> list[str]:

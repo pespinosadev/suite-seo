@@ -30,3 +30,7 @@ class UserUpdate(BaseModel):
     password: Optional[str] = None
     role_id: Optional[int] = None
     is_active: Optional[bool] = None
+
+
+class SetSmtpPasswordRequest(BaseModel):
+    smtp_password: str

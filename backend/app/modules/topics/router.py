@@ -140,5 +140,6 @@ async def send_email(
     await service.send_topics_email(
         body.recipients, body.subject, body.html_body, db,
         sender_email=current_user.email,
+        sender_smtp_password=current_user.smtp_password or "",
     )
     return {"ok": True}

@@ -247,6 +247,7 @@ async def send_topics_email(
     html_body: str,
     db: AsyncSession,
     sender_email: str = "",
+    sender_smtp_password: str = "",
 ) -> None:
     from app.core.config import settings
 
@@ -256,8 +257,17 @@ async def send_topics_email(
             detail="SMTP no configurado en el servidor. Añade SMTP_HOST al .env del VPS.",
         )
 
-    auth_user = settings.SMTP_USER
+    # Build SMTP auth user: derive username from sender email + configured domain
+    # e.g. pespinosa@prensaiberica.es + renr.grupoepi.es → pespinosa@renr.grupoepi.es
+    if sender_email and settings.SMTP_AUTH_DOMAIN:
+        username_prefix = sender_email.split("@")[0]
+        auth_user = f"{username_prefix}@{settings.SMTP_AUTH_DOMAIN}"
+    else:
+        auth_user = settings.SMTP_USER
+
+    auth_password = sender_smtp_password or settings.SMTP_PASSWORD
     display_from = sender_email if sender_email else (settings.SMTP_FROM or auth_user)
+
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject
     msg["From"] = display_from
@@ -265,7 +275,6 @@ async def send_topics_email(
     msg.attach(MIMEText(html_body, "html", "utf-8"))
 
     host, port = settings.SMTP_HOST, settings.SMTP_PORT
-    password = settings.SMTP_PASSWORD
 
     def _send() -> None:
         with smtplib.SMTP(host, port, timeout=15) as smtp:
@@ -273,7 +282,7 @@ async def send_topics_email(
             smtp.starttls()
             smtp.ehlo()
             if auth_user:
-                smtp.login(auth_user, password)
+                smtp.login(auth_user, auth_password)
             smtp.sendmail(display_from, recipients, msg.as_bytes())
 
     try:

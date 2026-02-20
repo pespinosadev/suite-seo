@@ -42,6 +42,15 @@ async def update_user(
     return await service.update_user(user_id, body, current_user.id, db)
 
 
+@router.put("/me/smtp-password", response_model=schemas.UserListItem)
+async def set_my_smtp_password(
+    body: schemas.SetSmtpPasswordRequest,
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    return await service.set_smtp_password(current_user.id, body, db)
+
+
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_user(
     user_id: int,
