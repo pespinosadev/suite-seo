@@ -7,142 +7,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="suite-seo.css" rel="stylesheet">
+  <script>if(localStorage.getItem('seo-theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
 </head>
 <body class="topics-page">
 
   <!-- ══ SIDEBAR ══ -->
-  <aside class="seo-sidebar" id="sidebar">
-    <div class="seo-brand">
-      <span class="seo-brand-text">
-        <span class="brand-top">Suite</span><span class="brand-bot">SEO</span>
-      </span>
-    </div>
-    <nav class="seo-nav">
-      <div class="seo-nav-label">Principal</div>
-      <a href="dashboard.html" class="seo-nav-item">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2">
-          <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
-          <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
-        </svg>
-        <span>Dashboard</span>
-      </a>
-      <a href="topics.html" class="seo-nav-item active">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2">
-          <rect x="3" y="4" width="18" height="18" rx="2"/>
-          <line x1="16" y1="2" x2="16" y2="6"/>
-          <line x1="8" y1="2" x2="8" y2="6"/>
-          <line x1="3" y1="10" x2="21" y2="10"/>
-        </svg>
-        <span>Temas del día</span>
-      </a>
-      <a href="users.html" class="seo-nav-item" id="nav-users" style="display:none">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-          <circle cx="9" cy="7" r="4"/>
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-        </svg>
-        <span>Usuarios</span>
-      </a>
-      <a href="domains.html" class="seo-nav-item" id="nav-domains" style="display:none">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/>
-          <line x1="2" y1="12" x2="22" y2="12"/>
-          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-        </svg>
-        <span>Dominios</span>
-      </a>
-    </nav>
-  </aside>
+  <aside class="seo-sidebar"></aside>
 
   <!-- ══ HEADER ══ -->
-  <header class="seo-header">
-    <div class="seo-header-left">
-      <button class="seo-toggle" id="sidebar-toggle" title="Colapsar menú">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2">
-          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/>
-          <line x1="3" y1="18" x2="21" y2="18"/>
-        </svg>
-      </button>
-      <div style="position:relative">
-        <button class="seo-modules-btn" id="modules-toggle" title="Dominios">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <line x1="2" y1="12" x2="22" y2="12"/>
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-          </svg>
-          Todos los dominios
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke-width="2.5">
-            <polyline points="6 9 12 15 18 9"/>
-          </svg>
-        </button>
-        <div class="seo-modules-dropdown" id="modules-menu">
-          <a href="domains.html">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="2" y1="12" x2="22" y2="12"/>
-              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-            </svg>
-            Todos los dominios
-          </a>
-          <div id="modules-domain-list"></div>
-        </div>
-      </div>
-    </div>
-    <div class="seo-header-right">
-      <button class="seo-action" title="Modo oscuro" id="theme-toggle">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" id="icon-moon">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" id="icon-sun" style="display:none">
-          <circle cx="12" cy="12" r="5"/>
-          <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-        </svg>
-      </button>
-      <div class="seo-action" style="width:auto;padding:0 .5rem;pointer-events:none">
-        <span class="seo-clock" id="clock">--:--:--</span>
-      </div>
-      <div class="seo-sep"></div>
-      <div class="seo-user" id="user-trigger">
-        <div class="seo-avatar" id="user-avatar">--</div>
-        <div class="seo-user-meta">
-          <div class="seo-user-name" id="user-name">—</div>
-          <div class="seo-user-role" id="user-role">—</div>
-        </div>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
-             style="color:var(--text-muted);stroke:currentColor;margin-left:.1rem">
-          <polyline points="6 9 12 15 18 9"/>
-        </svg>
-        <div class="seo-user-dropdown" id="user-menu">
-          <div class="seo-user-dropdown-header">
-            <div class="seo-avatar" id="dd-avatar">--</div>
-            <div class="name" id="dd-name">—</div>
-            <div class="email" id="dd-email">—</div>
-          </div>
-          <div class="divider"></div>
-          <a href="account.html">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2">
-              <circle cx="12" cy="8" r="4"/>
-              <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-            </svg>
-            Mi cuenta
-          </a>
-          <div class="divider"></div>
-          <a href="#" onclick="logout();return false">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-              <polyline points="16 17 21 12 16 7"/>
-              <line x1="21" y1="12" x2="9" y2="12"/>
-            </svg>
-            Cerrar sesión
-          </a>
-        </div>
-      </div>
-    </div>
-  </header>
+  <header class="seo-header"></header>
 
   <!-- ══ MAIN ══ -->
   <main class="seo-main">
@@ -620,6 +493,7 @@
   <!-- ══════════════════════════════════════
        SCRIPTS
   ══════════════════════════════════════ -->
+  <script src="js/layout.js"></script>
   <script src="js/topics-email.js"></script>
   <script>
     const API_BASE = 'https://vps-a351882a.vps.ovh.net';
@@ -643,11 +517,6 @@
     function closeModal(id) {
       document.getElementById(id).classList.remove('show');
     }
-    function logout() {
-      localStorage.removeItem('token');
-      window.location.href = 'login.html';
-    }
-
     function updateCharCount(input, counterId, max) {
       const el = document.getElementById(counterId);
       const len = input.value.length;
@@ -655,143 +524,22 @@
       el.className = 'char-counter' + (len > max * .9 ? (len >= max ? ' error' : ' warn') : '');
     }
 
-    /* ── Clock & Date ── */
-    function updateClock() {
-      const now = new Date();
-      document.getElementById('clock').textContent =
-        now.toLocaleTimeString('es-ES', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
-    }
-    updateClock(); setInterval(updateClock, 1000);
-
     const today = new Date();
     document.getElementById('topics-date').textContent =
       today.toLocaleDateString('es-ES', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
 
-    /* ── Dark mode ── */
-    const themeToggle = document.getElementById('theme-toggle');
-    const iconMoon = document.getElementById('icon-moon');
-    const iconSun  = document.getElementById('icon-sun');
-    function applyDark() {
-      document.documentElement.setAttribute('data-theme','dark');
-      iconMoon.style.display = 'none'; iconSun.style.display = '';
-      localStorage.setItem('seo-theme','dark');
-    }
-    function applyLight() {
-      document.documentElement.removeAttribute('data-theme');
-      iconMoon.style.display = ''; iconSun.style.display = 'none';
-      localStorage.setItem('seo-theme','light');
-    }
-    if ((localStorage.getItem('seo-theme') || 'light') === 'dark') applyDark();
-    themeToggle.addEventListener('click', () =>
-      document.documentElement.getAttribute('data-theme') === 'dark' ? applyLight() : applyDark()
-    );
-
-    /* ── Sidebar toggle ── */
-    document.getElementById('sidebar-toggle').addEventListener('click', () =>
-      document.body.classList.toggle('minimenu'));
-
-    /* ── Modules dropdown ── */
-    const modulesToggle = document.getElementById('modules-toggle');
-    const modulesMenu   = document.getElementById('modules-menu');
-    modulesToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      modulesMenu.classList.toggle('show');
-      userMenu.classList.remove('show');
-    });
-
-    /* ── User dropdown ── */
-    const userTrigger = document.getElementById('user-trigger');
-    const userMenu    = document.getElementById('user-menu');
-    userTrigger.addEventListener('click', (e) => {
-      e.stopPropagation();
-      userMenu.classList.toggle('show');
-      modulesMenu.classList.remove('show');
-    });
-    document.addEventListener('click', () => {
-      modulesMenu.classList.remove('show');
-      userMenu.classList.remove('show');
-    });
-
-    /* ── Auth / load user ── */
-    async function loadUser() {
-      try {
-        const res = await fetch(`${API_BASE}/api/auth/me`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (res.status === 401) { logout(); return; }
-        const user = await res.json();
-        const displayName = [user.first_name, user.last_name].filter(Boolean).join(' ') || user.email.split('@')[0];
-        const initials = ((user.first_name || user.email.split('@')[0]).slice(0,1) + (user.last_name || '').slice(0,1)).toUpperCase() || '--';
-        function applyAvatar(el, isText) {
-          if (user.avatar) {
-            el.style.backgroundImage = `url(${user.avatar})`;
-            el.style.backgroundSize = 'cover';
-            el.style.fontSize = '0';
-            el.textContent = '';
-          } else {
-            el.style.backgroundImage = '';
-            el.style.fontSize = '';
-            el.textContent = isText ? initials : initials;
-          }
-        }
-        applyAvatar(document.getElementById('user-avatar'), true);
-        applyAvatar(document.getElementById('dd-avatar'), true);
-        document.getElementById('user-name').textContent    = displayName;
-        document.getElementById('user-role').textContent    = user.role.name;
-        document.getElementById('dd-name').textContent      = displayName;
-        document.getElementById('dd-email').textContent     = user.email;
-        if (user.role.name === 'admin') {
-          document.getElementById('nav-users').style.display   = '';
-          document.getElementById('nav-domains').style.display = '';
-        }
-      } catch(e) { console.error(e); }
-    }
-
-    /* ── Load domains into header dropdown + feed filter ── */
-    async function loadDomains() {
-      try {
-        const res = await fetch(`${API_BASE}/api/domains/`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (!res.ok) return;
-        const domains = await res.json();
-        allDomainsData = domains;
-        if (!domains.length) return;
-        // Header dropdown
-        const catLabels = { nacionales:'Nacionales', regionales:'Regionales',
-          deportivos:'Deportivos', verticales:'Verticales', revistas:'Revistas' };
-        const grouped = {};
-        domains.forEach(d => {
-          const k = d.category.name;
-          if (!grouped[k]) grouped[k] = [];
-          grouped[k].push(d);
-        });
-        document.getElementById('modules-domain-list').innerHTML =
-          `<div class="divider" style="margin:.4rem 0"></div>` +
-          Object.entries(grouped).map(([cat, doms]) => `
-            <div style="padding:.4rem 1rem .15rem;font-size:.65rem;font-weight:700;
-              text-transform:uppercase;letter-spacing:.07em;color:var(--text-nav-label)">
-              ${escHtml(catLabels[cat] || cat)}
-            </div>
-            ${doms.map(d => `
-              <a href="${escHtml(d.full_url)}" target="_blank" rel="noopener">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2">
-                  <circle cx="12" cy="12" r="10"/>
-                  <line x1="2" y1="12" x2="22" y2="12"/>
-                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                </svg>
-                ${escHtml(d.domain)}
-              </a>
-            `).join('')}
-          `).join('');
-        // Feed domain filter
-        const sel = document.getElementById('feed-domain-filter');
-        domains.forEach(d => {
-          const opt = document.createElement('option');
-          opt.value = d.id; opt.textContent = d.domain;
-          sel.appendChild(opt);
-        });
-      } catch(e) { console.error(e); }
+    /* ── Load domains into feed filter (header handled by layout.js) ── */
+    function loadDomains() {
+      const domains = window.layoutDomains || [];
+      allDomainsData = domains;
+      if (!domains.length) return;
+      const sel = document.getElementById('feed-domain-filter');
+      sel.innerHTML = '<option value="">Todos los dominios</option>';
+      domains.forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d.id; opt.textContent = d.domain;
+        sel.appendChild(opt);
+      });
     }
 
     /* ── Load competitors JSON ── */
@@ -1480,7 +1228,7 @@
 
     /* ── Init ── */
     async function init() {
-      await loadUser();
+      await initLayout('topics');
       await Promise.all([loadDomains(), loadCompetitors(), fetchCategories(), fetchAutoTopics(), fetchTopics()]);
       if (allTopics.length === 0 && allAutoTopics.length > 0) {
         await applyAutoTopics();

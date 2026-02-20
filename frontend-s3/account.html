@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="suite-seo.css" rel="stylesheet">
+  <script>if(localStorage.getItem('seo-theme')==='dark')document.documentElement.setAttribute('data-theme','dark');</script>
   <style>
     .account-avatar-wrap {
       position: relative;
@@ -60,112 +61,8 @@
 </head>
 <body>
 
-  <!-- ══════════════════════════════════════════
-       SIDEBAR
-  ══════════════════════════════════════════ -->
-  <aside class="seo-sidebar">
-    <div class="seo-brand">
-      <span class="seo-brand-text">
-        <span class="brand-top">Suite</span><span class="brand-bot">SEO</span>
-      </span>
-    </div>
-    <nav class="seo-nav">
-      <div class="seo-nav-label">Principal</div>
-      <a href="dashboard.html" class="seo-nav-item">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2">
-          <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
-          <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
-        </svg>
-        <span>Dashboard</span>
-      </a>
-      <a href="topics.html" class="seo-nav-item">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2">
-          <rect x="3" y="4" width="18" height="18" rx="2"/>
-          <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
-          <line x1="3" y1="10" x2="21" y2="10"/>
-        </svg>
-        <span>Temas del día</span>
-      </a>
-      <a href="users.html" class="seo-nav-item" id="nav-users" style="display:none">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-          <circle cx="9" cy="7" r="4"/>
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-        </svg>
-        <span>Usuarios</span>
-      </a>
-      <a href="domains.html" class="seo-nav-item" id="nav-domains" style="display:none">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/>
-          <line x1="2" y1="12" x2="22" y2="12"/>
-          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-        </svg>
-        <span>Dominios</span>
-      </a>
-    </nav>
-  </aside>
-
-  <!-- ══════════════════════════════════════════
-       HEADER
-  ══════════════════════════════════════════ -->
-  <header class="seo-header">
-    <div class="seo-header-left">
-      <button class="seo-toggle" id="sidebar-toggle" title="Colapsar menú">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2">
-          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/>
-          <line x1="3" y1="18" x2="21" y2="18"/>
-        </svg>
-      </button>
-    </div>
-    <div class="seo-header-right">
-      <button class="seo-action" title="Modo oscuro" id="theme-toggle">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" id="icon-moon">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" id="icon-sun" style="display:none">
-          <circle cx="12" cy="12" r="5"/>
-          <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-        </svg>
-      </button>
-      <div class="seo-sep"></div>
-      <div class="seo-user" id="user-trigger">
-        <div class="seo-avatar" id="user-avatar">--</div>
-        <div class="seo-user-meta">
-          <div class="seo-user-name" id="user-name">—</div>
-          <div class="seo-user-role" id="user-role">—</div>
-        </div>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
-             style="color:var(--text-muted);stroke:currentColor;margin-left:.1rem">
-          <polyline points="6 9 12 15 18 9"/>
-        </svg>
-        <div class="seo-user-dropdown" id="user-menu">
-          <div class="seo-user-dropdown-header">
-            <div class="seo-avatar" id="dd-avatar">--</div>
-            <div class="name" id="dd-name">—</div>
-            <div class="email" id="dd-email">—</div>
-          </div>
-          <div class="divider"></div>
-          <a href="account.html" style="font-weight:600">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2">
-              <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-            </svg>
-            Mi cuenta
-          </a>
-          <div class="divider"></div>
-          <a href="#" onclick="logout();return false">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-              <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
-            </svg>
-            Cerrar sesión
-          </a>
-        </div>
-      </div>
-    </div>
-  </header>
+  <aside class="seo-sidebar"></aside>
+  <header class="seo-header"></header>
 
   <!-- ══════════════════════════════════════════
        MAIN
@@ -274,13 +171,12 @@
   <!-- ══════════════════════════════════════════
        SCRIPTS
   ══════════════════════════════════════════ -->
+  <script src="js/layout.js"></script>
   <script>
     const API_BASE = 'https://vps-a351882a.vps.ovh.net';
     const token = localStorage.getItem('token');
-    if (!token) { window.location.href = 'login.html'; }
 
     /* ── Utils ── */
-    function logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; }
     function setAvatarEl(el, user) {
       if (user.avatar) {
         el.style.backgroundImage = `url(${user.avatar})`;
@@ -306,36 +202,13 @@
       btn.textContent = loading ? 'Guardando…' : label;
     }
 
-    /* ── Load user ── */
+    /* ── Load user (form only) ── */
     async function loadUser() {
       const res = await fetch(`${API_BASE}/api/auth/me`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.status === 401) { logout(); return; }
       const user = await res.json();
-
-      // Header
-      const initials = (user.first_name || user.email.split('@')[0]).slice(0,2).toUpperCase();
-      const headerAvatar = document.getElementById('user-avatar');
-      const ddAvatar = document.getElementById('dd-avatar');
-      if (user.avatar) {
-        headerAvatar.style.cssText += ';background-image:url(' + user.avatar + ');background-size:cover;font-size:0';
-        ddAvatar.style.cssText += ';background-image:url(' + user.avatar + ');background-size:cover;font-size:0';
-      } else {
-        headerAvatar.textContent = initials;
-        ddAvatar.textContent = initials;
-      }
-      const displayName = [user.first_name, user.last_name].filter(Boolean).join(' ') || user.email.split('@')[0];
-      document.getElementById('user-name').textContent = displayName;
-      document.getElementById('user-role').textContent = user.role.name;
-      document.getElementById('dd-name').textContent = displayName;
-      document.getElementById('dd-email').textContent = user.email;
-      if (user.role.name === 'admin') {
-        document.getElementById('nav-users').style.display = '';
-        document.getElementById('nav-domains').style.display = '';
-      }
-
-      // Form
       document.getElementById('f-first-name').value = user.first_name || '';
       document.getElementById('f-last-name').value = user.last_name || '';
       document.getElementById('f-email').value = user.email;
@@ -462,35 +335,12 @@
       finally { setBtnLoading('btn-save-smtp', false, 'Guardar contraseña de correo'); }
     }
 
-    /* ── Sidebar + theme ── */
-    document.getElementById('sidebar-toggle').addEventListener('click', () => {
-      document.body.classList.toggle('minimenu');
-      localStorage.setItem('minimenu', document.body.classList.contains('minimenu') ? '1' : '');
-    });
-    if (localStorage.getItem('minimenu')) document.body.classList.add('minimenu');
-
-    const themeBtn = document.getElementById('theme-toggle');
-    function applyTheme(dark) {
-      document.body.classList.toggle('dark', dark);
-      document.getElementById('icon-moon').style.display = dark ? 'none' : '';
-      document.getElementById('icon-sun').style.display  = dark ? '' : 'none';
-    }
-    applyTheme(localStorage.getItem('theme') === 'dark');
-    themeBtn.addEventListener('click', () => {
-      const dark = !document.body.classList.contains('dark');
-      localStorage.setItem('theme', dark ? 'dark' : 'light');
-      applyTheme(dark);
-    });
-
-    /* ── User menu toggle ── */
-    document.getElementById('user-trigger').addEventListener('click', e => {
-      e.stopPropagation();
-      document.getElementById('user-menu').classList.toggle('show');
-    });
-    document.addEventListener('click', () => document.getElementById('user-menu').classList.remove('show'));
-
     /* ── Init ── */
-    loadUser();
+    async function init() {
+      await initLayout('account');
+      await loadUser();
+    }
+    init();
   </script>
 </body>
 </html>

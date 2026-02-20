@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Suite SEO — Acceder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="suite-seo.css" rel="stylesheet">
+</head>
+<body>
+  <div class="seo-auth-wrap">
+    <div class="seo-login-card">
+      <div class="seo-login-brand">Suite<span>SEO</span></div>
+      <p class="seo-login-sub">Prensa Ibérica — Panel interno</p>
+
+      <div id="error-msg" class="seo-alert-error"></div>
+
+      <form id="login-form">
+        <div style="margin-bottom:1.1rem">
+          <label class="seo-form-label">Email</label>
+          <input type="email" class="seo-form-control" id="email"
+            placeholder="tu@prensaiberica.es" required autofocus>
+        </div>
+        <div style="margin-bottom:1.75rem">
+          <label class="seo-form-label">Contraseña</label>
+          <input type="password" class="seo-form-control" id="password"
+            placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="seo-btn-login" id="submit-btn">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = 'https://vps-a351882a.vps.ovh.net';
+
+    if (localStorage.getItem('token')) window.location.href = 'dashboard.html';
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      const errEl = document.getElementById('error-msg');
+
+      btn.disabled = true;
+      btn.textContent = 'Accediendo…';
+      errEl.classList.remove('show');
+
+      try {
+        const res = await fetch(`${API_BASE}/api/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value
+          })
+        });
+        if (!res.ok) {
+          const d = await res.json();
+          throw new Error(d.detail || 'Error al iniciar sesión');
+        }
+        const d = await res.json();
+        localStorage.setItem('token', d.access_token);
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        errEl.textContent = err.message;
+        errEl.classList.add('show');
+        btn.disabled = false;
+        btn.textContent = 'Entrar';
+      }
+    });
+  </script>
+</body>
+</html>
