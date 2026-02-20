@@ -17,7 +17,7 @@ AUTO_TOPICS_DEFAULT = [
 async def seed_auto_topics(db: AsyncSession) -> None:
     for title, order in AUTO_TOPICS_DEFAULT:
         result = await db.execute(select(AutoTopic).where(AutoTopic.title == title))
-        if not result.scalar_one_or_none():
+        if not result.scalars().first():
             db.add(AutoTopic(title=title, display_order=order))
     await db.commit()
 
