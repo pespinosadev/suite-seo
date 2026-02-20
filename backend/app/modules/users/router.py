@@ -42,6 +42,15 @@ async def update_user(
     return await service.update_user(user_id, body, current_user.id, db)
 
 
+@router.put("/me/profile", response_model=schemas.UserListItem)
+async def update_my_profile(
+    body: schemas.UpdateProfileRequest,
+    db: AsyncSession = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    return await service.update_my_profile(current_user.id, body, db)
+
+
 @router.put("/me/smtp-password", response_model=schemas.UserListItem)
 async def set_my_smtp_password(
     body: schemas.SetSmtpPasswordRequest,

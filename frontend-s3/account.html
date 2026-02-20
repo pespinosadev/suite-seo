@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Suite SEO — Mi cuenta</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="suite-seo.css" rel="stylesheet">
+  <style>
+    .account-avatar-wrap {
+      position: relative;
+      width: 96px;
+      height: 96px;
+      cursor: pointer;
+      margin: 0 auto 1.25rem;
+    }
+    .account-avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-size: 2rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
+    }
+    .account-avatar-overlay {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: rgba(0,0,0,.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity .2s;
+    }
+    .account-avatar-wrap:hover .account-avatar-overlay { opacity: 1; }
+    .account-section-title {
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+    .account-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .75rem;
+    }
+    @media (max-width: 540px) { .account-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════
+       SIDEBAR
+  ══════════════════════════════════════════ -->
+  <aside class="seo-sidebar">
+    <div class="seo-brand">
+      <span class="seo-brand-text">
+        <span class="brand-top">Suite</span><span class="brand-bot">SEO</span>
+      </span>
+    </div>
+    <nav class="seo-nav">
+      <div class="seo-nav-label">Principal</div>
+      <a href="dashboard.html" class="seo-nav-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+        </svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="topics.html" class="seo-nav-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        <span>Temas del día</span>
+      </a>
+      <a href="users.html" class="seo-nav-item" id="nav-users" style="display:none">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        <span>Usuarios</span>
+      </a>
+      <a href="domains.html" class="seo-nav-item" id="nav-domains" style="display:none">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="2" y1="12" x2="22" y2="12"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+        <span>Dominios</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ══════════════════════════════════════════
+       HEADER
+  ══════════════════════════════════════════ -->
+  <header class="seo-header">
+    <div class="seo-header-left">
+      <button class="seo-toggle" id="sidebar-toggle" title="Colapsar menú">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="seo-header-right">
+      <button class="seo-action" title="Modo oscuro" id="theme-toggle">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" id="icon-moon">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" id="icon-sun" style="display:none">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+      <div class="seo-sep"></div>
+      <div class="seo-user" id="user-trigger">
+        <div class="seo-avatar" id="user-avatar">--</div>
+        <div class="seo-user-meta">
+          <div class="seo-user-name" id="user-name">—</div>
+          <div class="seo-user-role" id="user-role">—</div>
+        </div>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+             style="color:var(--text-muted);stroke:currentColor;margin-left:.1rem">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+        <div class="seo-user-dropdown" id="user-menu">
+          <div class="seo-user-dropdown-header">
+            <div class="seo-avatar" id="dd-avatar">--</div>
+            <div class="name" id="dd-name">—</div>
+            <div class="email" id="dd-email">—</div>
+          </div>
+          <div class="divider"></div>
+          <a href="account.html" style="font-weight:600">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2">
+              <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+            </svg>
+            Mi cuenta
+          </a>
+          <div class="divider"></div>
+          <a href="#" onclick="logout();return false">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+              <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+            Cerrar sesión
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════════
+       MAIN
+  ══════════════════════════════════════════ -->
+  <main class="seo-main">
+    <div class="seo-page-header">
+      <h5>Mi cuenta</h5>
+      <ul class="seo-breadcrumb">
+        <li><a href="dashboard.html">Inicio</a></li>
+        <li><span class="sep">›</span></li>
+        <li>Mi cuenta</li>
+      </ul>
+    </div>
+
+    <div class="seo-content" style="max-width:600px">
+
+      <!-- ── Foto + datos personales ── -->
+      <div class="seo-card">
+        <div class="account-section-title">Perfil</div>
+
+        <!-- Avatar -->
+        <div class="account-avatar-wrap" onclick="document.getElementById('avatar-input').click()" title="Cambiar foto">
+          <div class="account-avatar" id="account-avatar-el"></div>
+          <div class="account-avatar-overlay">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+              <circle cx="12" cy="13" r="4"/>
+            </svg>
+          </div>
+        </div>
+        <input type="file" id="avatar-input" accept="image/*" style="display:none">
+
+        <div class="account-grid" style="margin-bottom:.75rem">
+          <div>
+            <label style="font-size:.78rem;font-weight:600;color:var(--text-label);display:block;margin-bottom:.3rem">Nombre</label>
+            <input class="seo-input" type="text" id="f-first-name" placeholder="Tu nombre">
+          </div>
+          <div>
+            <label style="font-size:.78rem;font-weight:600;color:var(--text-label);display:block;margin-bottom:.3rem">Apellidos</label>
+            <input class="seo-input" type="text" id="f-last-name" placeholder="Tus apellidos">
+          </div>
+        </div>
+        <div style="margin-bottom:.75rem">
+          <label style="font-size:.78rem;font-weight:600;color:var(--text-label);display:block;margin-bottom:.3rem">Email</label>
+          <input class="seo-input" type="email" id="f-email" readonly style="opacity:.6;cursor:not-allowed">
+        </div>
+        <div class="seo-form-error" id="profile-error"></div>
+        <div style="display:flex;justify-content:flex-end">
+          <button class="seo-btn seo-btn-primary" id="btn-save-profile" onclick="saveProfile()">Guardar perfil</button>
+        </div>
+      </div>
+
+      <!-- ── Contraseña de la aplicación ── -->
+      <div class="seo-card">
+        <div class="account-section-title">Contraseña de la aplicación</div>
+        <div style="display:flex;flex-direction:column;gap:.65rem">
+          <div>
+            <label style="font-size:.78rem;font-weight:600;color:var(--text-label);display:block;margin-bottom:.3rem">Contraseña actual</label>
+            <input class="seo-input" type="password" id="f-current-pw" placeholder="••••••••" autocomplete="current-password">
+          </div>
+          <div class="account-grid">
+            <div>
+              <label style="font-size:.78rem;font-weight:600;color:var(--text-label);display:block;margin-bottom:.3rem">Nueva contraseña</label>
+              <input class="seo-input" type="password" id="f-new-pw" placeholder="••••••••" autocomplete="new-password">
+            </div>
+            <div>
+              <label style="font-size:.78rem;font-weight:600;color:var(--text-label);display:block;margin-bottom:.3rem">Confirmar contraseña</label>
+              <input class="seo-input" type="password" id="f-confirm-pw" placeholder="••••••••" autocomplete="new-password">
+            </div>
+          </div>
+        </div>
+        <div class="seo-form-error" id="pw-error" style="margin-top:.5rem"></div>
+        <div style="display:flex;justify-content:flex-end;margin-top:.75rem">
+          <button class="seo-btn seo-btn-primary" id="btn-save-pw" onclick="savePassword()">Guardar contraseña</button>
+        </div>
+      </div>
+
+      <!-- ── Contraseña de correo (SMTP) ── -->
+      <div class="seo-card">
+        <div class="account-section-title">Contraseña de correo (Office 365)</div>
+        <p style="font-size:.8rem;color:var(--text-secondary);margin:0 0 .75rem">
+          Necesaria para enviar los "Temas del día" desde tu cuenta de correo.
+          Se guarda de forma segura y solo se usa para el envío de correos.
+        </p>
+        <input class="seo-input" type="password" id="f-smtp-pw" placeholder="Tu contraseña de Office 365" autocomplete="new-password">
+        <div class="seo-form-error" id="smtp-error" style="margin-top:.4rem"></div>
+        <div style="display:flex;justify-content:flex-end;margin-top:.75rem">
+          <button class="seo-btn seo-btn-primary" id="btn-save-smtp" onclick="saveSmtp()">Guardar contraseña de correo</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ══════════════════════════════════════════
+       SCRIPTS
+  ══════════════════════════════════════════ -->
+  <script>
+    const API_BASE = 'https://vps-a351882a.vps.ovh.net';
+    const token = localStorage.getItem('token');
+    if (!token) { window.location.href = 'login.html'; }
+
+    /* ── Utils ── */
+    function logout() { localStorage.removeItem('token'); window.location.href = 'login.html'; }
+    function setAvatarEl(el, user) {
+      if (user.avatar) {
+        el.style.backgroundImage = `url(${user.avatar})`;
+        el.textContent = '';
+      } else {
+        const initials = ((user.first_name || user.email.split('@')[0]).slice(0,1) +
+                          (user.last_name || '').slice(0,1)).toUpperCase() || '--';
+        el.style.backgroundImage = '';
+        el.textContent = initials;
+      }
+    }
+    function showError(id, msg) {
+      const el = document.getElementById(id);
+      el.textContent = msg; el.classList.add('show');
+    }
+    function clearError(id) {
+      const el = document.getElementById(id);
+      el.textContent = ''; el.classList.remove('show');
+    }
+    function setBtnLoading(id, loading, label) {
+      const btn = document.getElementById(id);
+      btn.disabled = loading;
+      btn.textContent = loading ? 'Guardando…' : label;
+    }
+
+    /* ── Load user ── */
+    async function loadUser() {
+      const res = await fetch(`${API_BASE}/api/auth/me`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.status === 401) { logout(); return; }
+      const user = await res.json();
+
+      // Header
+      const initials = (user.first_name || user.email.split('@')[0]).slice(0,2).toUpperCase();
+      const headerAvatar = document.getElementById('user-avatar');
+      const ddAvatar = document.getElementById('dd-avatar');
+      if (user.avatar) {
+        headerAvatar.style.cssText += ';background-image:url(' + user.avatar + ');background-size:cover;font-size:0';
+        ddAvatar.style.cssText += ';background-image:url(' + user.avatar + ');background-size:cover;font-size:0';
+      } else {
+        headerAvatar.textContent = initials;
+        ddAvatar.textContent = initials;
+      }
+      const displayName = [user.first_name, user.last_name].filter(Boolean).join(' ') || user.email.split('@')[0];
+      document.getElementById('user-name').textContent = displayName;
+      document.getElementById('user-role').textContent = user.role.name;
+      document.getElementById('dd-name').textContent = displayName;
+      document.getElementById('dd-email').textContent = user.email;
+      if (user.role.name === 'admin') {
+        document.getElementById('nav-users').style.display = '';
+        document.getElementById('nav-domains').style.display = '';
+      }
+
+      // Form
+      document.getElementById('f-first-name').value = user.first_name || '';
+      document.getElementById('f-last-name').value = user.last_name || '';
+      document.getElementById('f-email').value = user.email;
+      setAvatarEl(document.getElementById('account-avatar-el'), user);
+    }
+
+    /* ── Avatar upload ── */
+    document.getElementById('avatar-input').addEventListener('change', function() {
+      const file = this.files[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) { alert('La imagen no debe superar 2 MB.'); return; }
+      const reader = new FileReader();
+      reader.onload = e => {
+        const el = document.getElementById('account-avatar-el');
+        el.style.backgroundImage = `url(${e.target.result})`;
+        el.textContent = '';
+        el.dataset.pendingAvatar = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    /* ── Save profile ── */
+    async function saveProfile() {
+      clearError('profile-error');
+      setBtnLoading('btn-save-profile', true, 'Guardar perfil');
+      const avatarEl = document.getElementById('account-avatar-el');
+      const body = {
+        first_name: document.getElementById('f-first-name').value.trim() || null,
+        last_name: document.getElementById('f-last-name').value.trim() || null,
+      };
+      if (avatarEl.dataset.pendingAvatar) body.avatar = avatarEl.dataset.pendingAvatar;
+      try {
+        const res = await fetch(`${API_BASE}/api/users/me/profile`, {
+          method: 'PUT',
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        if (!res.ok) { const d = await res.json().catch(()=>({})); showError('profile-error', d.detail || 'Error al guardar.'); return; }
+        delete avatarEl.dataset.pendingAvatar;
+        await loadUser();
+      } catch(e) { showError('profile-error', 'Error de red.'); }
+      finally { setBtnLoading('btn-save-profile', false, 'Guardar perfil'); }
+    }
+
+    /* ── Save password ── */
+    async function savePassword() {
+      clearError('pw-error');
+      const cur = document.getElementById('f-current-pw').value;
+      const nw  = document.getElementById('f-new-pw').value;
+      const cnf = document.getElementById('f-confirm-pw').value;
+      if (!cur || !nw) { showError('pw-error', 'Completa todos los campos.'); return; }
+      if (nw !== cnf) { showError('pw-error', 'Las contraseñas nuevas no coinciden.'); return; }
+      if (nw.length < 6) { showError('pw-error', 'La nueva contraseña debe tener al menos 6 caracteres.'); return; }
+      setBtnLoading('btn-save-pw', true, 'Guardar contraseña');
+      try {
+        const res = await fetch(`${API_BASE}/api/users/me/profile`, {
+          method: 'PUT',
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ current_password: cur, new_password: nw }),
+        });
+        if (!res.ok) { const d = await res.json().catch(()=>({})); showError('pw-error', d.detail || 'Error al guardar.'); return; }
+        document.getElementById('f-current-pw').value = '';
+        document.getElementById('f-new-pw').value = '';
+        document.getElementById('f-confirm-pw').value = '';
+      } catch(e) { showError('pw-error', 'Error de red.'); }
+      finally { setBtnLoading('btn-save-pw', false, 'Guardar contraseña'); }
+    }
+
+    /* ── Save SMTP password ── */
+    async function saveSmtp() {
+      clearError('smtp-error');
+      const val = document.getElementById('f-smtp-pw').value.trim();
+      if (!val) { showError('smtp-error', 'Introduce tu contraseña de Office 365.'); return; }
+      setBtnLoading('btn-save-smtp', true, 'Guardar contraseña de correo');
+      try {
+        const res = await fetch(`${API_BASE}/api/users/me/profile`, {
+          method: 'PUT',
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ smtp_password: val }),
+        });
+        if (!res.ok) { const d = await res.json().catch(()=>({})); showError('smtp-error', d.detail || 'Error al guardar.'); return; }
+        document.getElementById('f-smtp-pw').value = '';
+      } catch(e) { showError('smtp-error', 'Error de red.'); }
+      finally { setBtnLoading('btn-save-smtp', false, 'Guardar contraseña de correo'); }
+    }
+
+    /* ── Sidebar + theme ── */
+    document.getElementById('sidebar-toggle').addEventListener('click', () => {
+      document.body.classList.toggle('minimenu');
+      localStorage.setItem('minimenu', document.body.classList.contains('minimenu') ? '1' : '');
+    });
+    if (localStorage.getItem('minimenu')) document.body.classList.add('minimenu');
+
+    const themeBtn = document.getElementById('theme-toggle');
+    function applyTheme(dark) {
+      document.body.classList.toggle('dark', dark);
+      document.getElementById('icon-moon').style.display = dark ? 'none' : '';
+      document.getElementById('icon-sun').style.display  = dark ? '' : 'none';
+    }
+    applyTheme(localStorage.getItem('theme') === 'dark');
+    themeBtn.addEventListener('click', () => {
+      const dark = !document.body.classList.contains('dark');
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+      applyTheme(dark);
+    });
+
+    /* ── User menu toggle ── */
+    document.getElementById('user-trigger').addEventListener('click', e => {
+      e.stopPropagation();
+      document.getElementById('user-menu').classList.toggle('show');
+    });
+    document.addEventListener('click', () => document.getElementById('user-menu').classList.remove('show'));
+
+    /* ── Init ── */
+    loadUser();
+  </script>
+</body>
+</html>

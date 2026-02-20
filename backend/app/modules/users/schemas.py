@@ -12,6 +12,9 @@ class RoleOut(BaseModel):
 class UserListItem(BaseModel):
     id: int
     email: str
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    avatar: Optional[str] = None
     is_active: bool
     role: RoleOut
     created_at: datetime.datetime
@@ -34,3 +37,12 @@ class UserUpdate(BaseModel):
 
 class SetSmtpPasswordRequest(BaseModel):
     smtp_password: str
+
+
+class UpdateProfileRequest(BaseModel):
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    avatar: Optional[str] = None
+    current_password: Optional[str] = None
+    new_password: Optional[str] = None
+    smtp_password: Optional[str] = None

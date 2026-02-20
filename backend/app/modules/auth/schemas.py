@@ -1,4 +1,5 @@
 import datetime
+from typing import Optional
 from pydantic import BaseModel, EmailStr
 
 
@@ -21,6 +22,9 @@ class RoleOut(BaseModel):
 class UserOut(BaseModel):
     id: int
     email: str
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    avatar: Optional[str] = None
     is_active: bool
     role: RoleOut
     created_at: datetime.datetime

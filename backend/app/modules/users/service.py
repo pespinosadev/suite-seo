@@ -4,8 +4,8 @@ from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from app.modules.auth.models import User, Role
-from app.core.security import hash_password
-from app.modules.users.schemas import UserCreate, UserUpdate, SetSmtpPasswordRequest
+from app.core.security import hash_password, verify_password
+from app.modules.users.schemas import UserCreate, UserUpdate, SetSmtpPasswordRequest, UpdateProfileRequest
 
 
 async def list_users(db: AsyncSession) -> list[User]:
@@ -93,6 +93,34 @@ async def set_smtp_password(user_id: int, data: SetSmtpPasswordRequest, db: Asyn
     await db.commit()
     await db.refresh(user)
     return user
+
+
+async def update_my_profile(user_id: int, data: UpdateProfileRequest, db: AsyncSession) -> User:
+    result = await db.execute(
+        select(User).where(User.id == user_id).options(selectinload(User.role))
+    )
+    user = result.scalar_one_or_none()
+    if not user:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Usuario no encontrado")
+    if data.first_name is not None:
+        user.first_name = data.first_name
+    if data.last_name is not None:
+        user.last_name = data.last_name
+    if data.avatar is not None:
+        user.avatar = data.avatar
+    if data.new_password:
+        if not data.current_password:
+            raise HTTPException(status.HTTP_400_BAD_REQUEST, detail="Se requiere la contraseña actual")
+        if not verify_password(data.current_password, user.hashed_password):
+            raise HTTPException(status.HTTP_400_BAD_REQUEST, detail="Contraseña actual incorrecta")
+        user.hashed_password = hash_password(data.new_password)
+    if data.smtp_password is not None:
+        user.smtp_password = data.smtp_password
+    await db.commit()
+    result = await db.execute(
+        select(User).where(User.id == user_id).options(selectinload(User.role))
+    )
+    return result.scalar_one()
 
 
 async def delete_user(user_id: int, current_user_id: int, db: AsyncSession) -> None:
