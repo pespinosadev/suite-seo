@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Suite SEO — Temas del día</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="suite-seo.css" rel="stylesheet">
+</head>
+<body class="topics-page">
+
+  <!-- ══ SIDEBAR ══ -->
+  <aside class="seo-sidebar" id="sidebar">
+    <div class="seo-brand">
+      <span class="seo-brand-text">
+        <span class="brand-top">Suite</span><span class="brand-bot">SEO</span>
+      </span>
+    </div>
+    <nav class="seo-nav">
+      <div class="seo-nav-label">Principal</div>
+      <a href="dashboard.html" class="seo-nav-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+        </svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="topics.html" class="seo-nav-item active">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        <span>Temas del día</span>
+      </a>
+      <a href="users.html" class="seo-nav-item" id="nav-users" style="display:none">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        <span>Usuarios</span>
+      </a>
+      <a href="domains.html" class="seo-nav-item" id="nav-domains" style="display:none">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="2" y1="12" x2="22" y2="12"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+        <span>Dominios</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ══ HEADER ══ -->
+  <header class="seo-header">
+    <div class="seo-header-left">
+      <button class="seo-toggle" id="sidebar-toggle" title="Colapsar menú">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <div style="position:relative">
+        <button class="seo-modules-btn" id="modules-toggle" title="Dominios">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          Todos los dominios
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke-width="2.5">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+        <div class="seo-modules-dropdown" id="modules-menu">
+          <a href="domains.html">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" y1="12" x2="22" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+            Todos los dominios
+          </a>
+          <div id="modules-domain-list"></div>
+        </div>
+      </div>
+    </div>
+    <div class="seo-header-right">
+      <button class="seo-action" title="Modo oscuro" id="theme-toggle">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" id="icon-moon">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" id="icon-sun" style="display:none">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+      <div class="seo-action" style="width:auto;padding:0 .5rem;pointer-events:none">
+        <span class="seo-clock" id="clock">--:--:--</span>
+      </div>
+      <div class="seo-sep"></div>
+      <div class="seo-user" id="user-trigger">
+        <div class="seo-avatar" id="user-avatar">--</div>
+        <div class="seo-user-meta">
+          <div class="seo-user-name" id="user-name">—</div>
+          <div class="seo-user-role" id="user-role">—</div>
+        </div>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2.5"
+             style="color:var(--text-muted);stroke:currentColor;margin-left:.1rem">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+        <div class="seo-user-dropdown" id="user-menu">
+          <div class="seo-user-dropdown-header">
+            <div class="seo-avatar" id="dd-avatar">--</div>
+            <div class="name" id="dd-name">—</div>
+            <div class="email" id="dd-email">—</div>
+          </div>
+          <div class="divider"></div>
+          <a href="#" onclick="logout();return false">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+              <polyline points="16 17 21 12 16 7"/>
+              <line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+            Cerrar sesión
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══ MAIN ══ -->
+  <main class="seo-main">
+
+    <!-- Page header -->
+    <div class="topics-page-header">
+      <h5>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" style="stroke:var(--primary)">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        Temas del día
+      </h5>
+      <span class="topics-date" id="topics-date">—</span>
+      <div style="margin-left:auto;display:flex;gap:.5rem">
+        <button class="seo-btn seo-btn-primary" id="btn-refresh-all" onclick="refreshAll()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" style="stroke:currentColor">
+            <polyline points="23 4 23 10 17 10"/>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+          </svg>
+          Actualizar todo
+        </button>
+        <button class="seo-btn seo-btn-outline" onclick="alert('Historial próximamente')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2" style="stroke:currentColor">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          Historial
+        </button>
+      </div>
+    </div>
+
+    <!-- 3-column grid -->
+    <div class="topics-grid">
+
+      <!-- ── LEFT: Sources ── -->
+      <div class="topics-sources">
+        <div class="sources-panel-header">
+          <span>Fuentes</span>
+          <span id="sources-active-count" style="font-size:.7rem;color:var(--text-muted);font-weight:500">— activas</span>
+        </div>
+        <div class="panel-header-spacer"></div>
+        <div class="sources-list" id="sources-list">
+          <!-- Source cards rendered by JS -->
+          <div class="source-card active" data-source="hot_topics" onclick="selectSource(this,'hot_topics')">
+            <div class="source-icon">🔥</div>
+            <div class="source-info">
+              <div class="source-name">Hot Topics</div>
+              <div class="source-count" id="src-count-hot_topics">Cargando...</div>
+            </div>
+          </div>
+          <div class="source-card" data-source="eventos" onclick="selectSource(this,'eventos')">
+            <div class="source-icon">🏆</div>
+            <div class="source-info">
+              <div class="source-name">Eventos Deportivos</div>
+              <div class="source-count" id="src-count-eventos">—</div>
+            </div>
+          </div>
+          <div class="source-card" data-source="twitter" onclick="selectSource(this,'twitter')">
+            <div class="source-icon" style="font-weight:900;font-size:.85rem;color:var(--text-main)">𝕏</div>
+            <div class="source-info">
+              <div class="source-name">Tendencias Twitter X</div>
+              <div class="source-count" id="src-count-twitter">—</div>
+            </div>
+          </div>
+          <div class="source-card" data-source="prensa" onclick="selectSource(this,'prensa')">
+            <div class="source-icon">📰</div>
+            <div class="source-info">
+              <div class="source-name">Prensa</div>
+              <div class="source-count" id="src-count-prensa">—</div>
+            </div>
+          </div>
+          <div class="source-card" data-source="rrss" onclick="selectSource(this,'rrss')">
+            <div class="source-icon">📱</div>
+            <div class="source-info">
+              <div class="source-name">Redes Sociales</div>
+              <div class="source-count" id="src-count-rrss">—</div>
+            </div>
+          </div>
+        </div>
+        <div class="sources-stats">
+          <h6>Estadísticas</h6>
+          <div class="stat-row">
+            <span>Detectados:</span>
+            <span class="stat-val" id="stat-detected">—</span>
+          </div>
+          <div class="stat-row">
+            <span>Añadidos:</span>
+            <span class="stat-val" id="stat-added">—</span>
+          </div>
+          <div class="stat-row">
+            <span>Enviados:</span>
+            <span class="stat-val" id="stat-sent">—</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CENTER: Feed ── -->
+      <div class="topics-feed">
+        <div class="feed-toolbar">
+          <h5 id="feed-source-title">🔥 Hot Topics</h5>
+          <select class="feed-select" id="feed-domain-filter">
+            <option value="">🌐 Todos los dominios</option>
+          </select>
+          <select class="feed-select" id="feed-competitor-filter">
+            <option value="">Todos los competidores</option>
+          </select>
+          <span style="margin-left:auto;font-size:.72rem;color:var(--text-muted)" id="feed-count">—</span>
+        </div>
+        <div class="feed-legend">
+          <div class="legend-item">
+            <span class="legend-dot" style="background:#10b981"></span>Menos de 4h
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot" style="background:#f59e0b"></span>Entre 4h y 24h
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot" style="background:#ef4444"></span>Más de 24h
+          </div>
+        </div>
+        <div class="feed-items" id="feed-items">
+          <div style="text-align:center;padding:3rem;color:var(--text-muted);font-size:.85rem">
+            Cargando temas...
+          </div>
+        </div>
+      </div>
+
+      <!-- ── RIGHT: Added topics ── -->
+      <div class="topics-added">
+        <div class="added-panel-header">
+          <span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2" style="stroke:var(--primary);margin-right:.3rem;vertical-align:middle">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+            Temas añadidos
+          </span>
+          <span class="added-count-badge" id="added-count-badge">0</span>
+        </div>
+        <div class="panel-header-spacer"></div>
+        <div class="added-list" id="added-list">
+          <div style="text-align:center;padding:2rem;color:var(--text-muted);font-size:.8rem">
+            Sin temas añadidos
+          </div>
+        </div>
+        <div class="added-actions">
+          <button class="btn-dashed" onclick="openAddManual()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.5" style="stroke:currentColor">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            Añadir tema manual
+          </button>
+          <button class="btn-dashed" onclick="openAutoTopicsModal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" style="stroke:currentColor">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07M8.46 8.46a5 5 0 0 0 0 7.07"/>
+            </svg>
+            Temas automáticos
+          </button>
+          <button class="seo-btn seo-btn-outline" style="width:100%;justify-content:center" onclick="openSendEmailModal()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2" style="stroke:currentColor">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            Vista previa correo
+          </button>
+          <button class="seo-btn seo-btn-primary" style="width:100%;justify-content:center" onclick="openSendEmailModal()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2" style="stroke:currentColor">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+            Enviar correo
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /topics-grid -->
+  </main>
+
+  <!-- ══════════════════════════════════════
+       MODAL: Añadir / Editar tema
+  ══════════════════════════════════════ -->
+  <div class="seo-modal-backdrop" id="modal-topic" onclick="if(event.target===this)closeModal('modal-topic')">
+    <div class="seo-modal" style="max-width:540px">
+      <div class="seo-modal-header">
+        <span id="topic-modal-title">+ Añadir tema</span>
+        <button class="seo-modal-close" onclick="closeModal('modal-topic')">✕</button>
+      </div>
+      <div class="seo-modal-body">
+
+        <!-- Original news (shown when adding from source) -->
+        <div id="original-news-wrap" style="display:none;margin-bottom:1rem">
+          <div style="font-size:.72rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.4rem">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2" style="stroke:var(--text-muted);vertical-align:middle;margin-right:.25rem">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+            </svg>
+            Noticia original:
+          </div>
+          <div class="original-news-card">
+            <div class="original-news-title" id="orig-title">—</div>
+            <div class="original-news-meta">
+              <span id="orig-source">—</span>
+              <span>🔥 <span id="orig-score">—</span></span>
+              <span>⏱ <span id="orig-time">—</span></span>
+            </div>
+            <div style="font-size:.68rem;color:var(--text-muted);margin-top:.3rem" id="orig-desc">—</div>
+          </div>
+        </div>
+
+        <!-- Topic title -->
+        <div class="seo-form-group">
+          <label class="seo-label">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2" style="stroke:var(--text-muted);vertical-align:middle;margin-right:.25rem">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+            Tema:
+          </label>
+          <input class="seo-input" type="text" id="f-topic-title" placeholder="Título del tema" maxlength="80"
+                 oninput="updateCharCount(this,'char-count-title',80)">
+          <div class="char-counter" id="char-count-title">Máximo 80 caracteres</div>
+        </div>
+
+        <!-- Category -->
+        <div class="seo-form-group">
+          <label class="seo-label">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2" style="stroke:var(--text-muted);vertical-align:middle;margin-right:.25rem">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+            </svg>
+            Categoría:
+          </label>
+          <div style="display:flex;gap:.4rem;align-items:center">
+            <select class="seo-select" id="f-topic-category" style="flex:1">
+              <option value="">Selecciona categoría</option>
+            </select>
+            <button class="seo-btn seo-btn-outline" style="padding:.35rem .6rem" title="Nueva categoría" onclick="openNewCategoryInline()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" style="stroke:currentColor">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </button>
+            <button class="seo-btn seo-btn-outline" style="padding:.35rem .6rem" title="Gestionar categorías" onclick="openCatManager()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2" style="stroke:currentColor">
+                <circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
+              </svg>
+            </button>
+          </div>
+          <div style="font-size:.68rem;color:var(--text-muted);margin-top:.25rem">
+            Usa <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="2" style="stroke:currentColor;vertical-align:middle"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg> para editar o eliminar categorías
+          </div>
+          <!-- Inline new category form -->
+          <div id="new-cat-inline" style="display:none;margin-top:.5rem">
+            <div style="display:flex;gap:.4rem">
+              <input class="seo-input" type="text" id="f-new-cat-name" placeholder="Nombre categoría" style="flex:1">
+              <button class="seo-btn seo-btn-primary" onclick="saveNewCategory()">Guardar</button>
+              <button class="seo-btn seo-btn-outline" onclick="document.getElementById('new-cat-inline').style.display='none'">✕</button>
+            </div>
+            <div class="seo-form-error" id="new-cat-error"></div>
+          </div>
+        </div>
+
+        <!-- URL -->
+        <div class="seo-form-group">
+          <label class="seo-label">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2" style="stroke:var(--text-muted);vertical-align:middle;margin-right:.25rem">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+            </svg>
+            URL:
+          </label>
+          <input class="seo-input" type="url" id="f-topic-url" placeholder="https://...">
+        </div>
+
+        <!-- Include URL in email -->
+        <div class="seo-form-group" style="flex-direction:row;align-items:flex-start;gap:.6rem">
+          <input type="checkbox" id="f-topic-include-url" style="margin-top:.2rem;accent-color:var(--primary)">
+          <label for="f-topic-include-url" style="font-size:.8rem;color:var(--text-main);cursor:pointer">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke-width="2" style="stroke:var(--text-muted);vertical-align:middle;margin-right:.2rem">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+            </svg>
+            Incluir URL en el correo (aparecerá como enlace)
+            <div style="font-size:.68rem;color:var(--text-muted);margin-top:.15rem;font-weight:400">
+              Marca la casilla si quieres que el tema aparezca como enlace en el correo
+            </div>
+          </label>
+        </div>
+
+        <!-- Observation -->
+        <div class="seo-form-group">
+          <label class="seo-label">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2" style="stroke:var(--text-muted);vertical-align:middle;margin-right:.25rem">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+            Observación:
+          </label>
+          <textarea class="seo-input" id="f-topic-observation" rows="3"
+                    placeholder="Contexto adicional, notas, etc. (opcional)"
+                    style="resize:vertical;min-height:72px"></textarea>
+        </div>
+
+        <div class="seo-form-error" id="topic-form-error"></div>
+      </div>
+      <div class="seo-modal-footer">
+        <button class="seo-btn seo-btn-outline" onclick="closeModal('modal-topic')" style="color:#ef4444;border-color:#ef4444">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" style="stroke:currentColor">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+          Cancelar
+        </button>
+        <button class="seo-btn seo-btn-primary" id="topic-save-btn" onclick="saveTopic()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2.5" style="stroke:currentColor">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Añadir tema
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       MODAL: Gestionar categorías
+  ══════════════════════════════════════ -->
+  <div class="seo-modal-backdrop" id="modal-cat-manager" onclick="if(event.target===this)closeModal('modal-cat-manager')">
+    <div class="seo-modal" style="max-width:420px">
+      <div class="seo-modal-header">
+        <span>Gestionar categorías</span>
+        <button class="seo-modal-close" onclick="closeModal('modal-cat-manager')">✕</button>
+      </div>
+      <div class="seo-modal-body">
+        <!-- New category -->
+        <div style="display:flex;gap:.4rem;margin-bottom:1rem">
+          <input class="seo-input" type="text" id="f-catmgr-name" placeholder="Nueva categoría" style="flex:1">
+          <button class="seo-btn seo-btn-primary" onclick="saveCatFromManager()">Añadir</button>
+        </div>
+        <div class="seo-form-error" id="catmgr-error"></div>
+        <div id="cat-manager-list" style="margin-top:.5rem"></div>
+      </div>
+      <div class="seo-modal-footer">
+        <button class="seo-btn seo-btn-outline" onclick="closeModal('modal-cat-manager')">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       MODAL: Eliminar tema
+  ══════════════════════════════════════ -->
+  <div class="seo-modal-backdrop" id="modal-delete-topic" onclick="if(event.target===this)closeModal('modal-delete-topic')">
+    <div class="seo-modal" style="max-width:380px">
+      <div class="seo-modal-header">
+        <span>Eliminar tema</span>
+        <button class="seo-modal-close" onclick="closeModal('modal-delete-topic')">✕</button>
+      </div>
+      <div class="seo-modal-body">
+        <p style="font-size:.85rem;color:var(--text-main)">
+          ¿Seguro que quieres eliminar el tema <strong id="delete-topic-name"></strong>?
+        </p>
+      </div>
+      <div class="seo-modal-footer">
+        <button class="seo-btn seo-btn-outline" onclick="closeModal('modal-delete-topic')">Cancelar</button>
+        <button class="seo-btn seo-btn-danger" id="delete-topic-btn" onclick="confirmDeleteTopic()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       MODAL: Temas automáticos
+  ══════════════════════════════════════ -->
+  <div class="seo-modal-backdrop" id="modal-auto-topics" onclick="if(event.target===this)closeModal('modal-auto-topics')">
+    <div class="seo-modal" style="max-width:460px">
+      <div class="seo-modal-header">
+        <span>Temas automáticos</span>
+        <button class="seo-modal-close" onclick="closeModal('modal-auto-topics')">✕</button>
+      </div>
+      <div class="seo-modal-body">
+        <p style="font-size:.78rem;color:var(--text-muted);margin:0 0 .85rem">
+          Estos temas se añaden automáticamente al inicio de cada sesión.
+        </p>
+        <div style="display:flex;gap:.4rem;margin-bottom:.5rem">
+          <input class="seo-input" type="text" id="f-auto-topic-input" placeholder="Nuevo tema automático" style="flex:1"
+            onkeydown="if(event.key==='Enter')saveNewAutoTopic()">
+          <button class="seo-btn seo-btn-primary" onclick="saveNewAutoTopic()">Añadir</button>
+        </div>
+        <div class="seo-form-error" id="auto-topic-error"></div>
+        <div id="auto-topics-list" style="margin-top:.75rem"></div>
+      </div>
+      <div class="seo-modal-footer">
+        <button class="seo-btn seo-btn-outline" onclick="closeModal('modal-auto-topics')">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       MODAL: Enviar Temas del Día
+  ══════════════════════════════════════ -->
+  <div class="seo-modal-backdrop" id="modal-send-email"
+       onclick="if(event.target===this)closeModal('modal-send-email')">
+    <div class="seo-modal" style="max-width:680px;display:flex;flex-direction:column;max-height:90vh">
+      <div class="seo-modal-header">
+        <span>📧 Enviar Temas del Día</span>
+        <button class="seo-modal-close" onclick="closeModal('modal-send-email')">✕</button>
+      </div>
+
+      <div class="seo-modal-body" style="overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:1rem">
+
+        <!-- Destinatarios -->
+        <div>
+          <label style="font-size:.78rem;font-weight:600;color:var(--text-label)">📋 Destinatarios:</label>
+          <div id="email-recipients-chips"
+               style="display:flex;flex-wrap:wrap;gap:.35rem;align-items:center;
+                      min-height:2.4rem;margin:.4rem 0;padding:.3rem .45rem;
+                      border:1px solid var(--border);border-radius:6px;
+                      background:var(--bg-card);cursor:text"
+               onclick="document.getElementById('email-new-recipient').focus()"></div>
+        </div>
+
+        <!-- Asunto -->
+        <div>
+          <label style="font-size:.78rem;font-weight:600;color:var(--text-label)">📝 Asunto:</label>
+          <input class="seo-input" id="email-subject" type="text" style="width:100%;margin-top:.35rem">
+        </div>
+
+        <!-- Mensaje personalizado -->
+        <div>
+          <label style="font-size:.78rem;font-weight:600;color:var(--text-label)">🔥 Mensaje personalizado (opcional):</label>
+          <div style="margin-top:.35rem;border:1px solid var(--border);border-radius:6px;overflow:hidden">
+            <div id="email-editor-toolbar"
+                 style="display:flex;gap:.2rem;padding:.35rem .5rem;
+                        border-bottom:1px solid var(--border);background:var(--bg-main)">
+              <button class="seo-btn seo-btn-icon" title="Negrita"
+                      onclick="emailExecCmd('bold')"><b>B</b></button>
+              <button class="seo-btn seo-btn-icon" title="Cursiva"
+                      onclick="emailExecCmd('italic')"><i>I</i></button>
+              <button class="seo-btn seo-btn-icon" title="Subrayado"
+                      onclick="emailExecCmd('underline')"><u>U</u></button>
+              <button class="seo-btn seo-btn-icon" title="Enlace"
+                      onclick="emailInsertLink()">🔗</button>
+              <button class="seo-btn seo-btn-icon" title="Emoji"
+                      onclick="emailInsertEmoji()">😊</button>
+            </div>
+            <div id="email-message" contenteditable="true"
+                 style="min-height:110px;padding:.65rem .85rem;outline:none;
+                        font-size:.85rem;line-height:1.6;background:var(--bg-card)"></div>
+          </div>
+        </div>
+
+        <!-- Vista previa -->
+        <div>
+          <label style="font-size:.78rem;font-weight:600;color:var(--text-label)">👁 Vista previa del correo:</label>
+          <div id="email-preview-wrap"
+               style="margin-top:.35rem;border:1px solid var(--border);border-radius:6px;
+                      background:#fff;max-height:380px;overflow-y:auto">
+            <div style="font-size:.8rem;color:#999;text-align:center;padding:1.5rem">
+              Pulsa "Actualizar Vista Previa" para generar el correo
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /modal-body -->
+
+      <div class="seo-modal-footer">
+        <button class="seo-btn seo-btn-outline" onclick="closeModal('modal-send-email')">✕ Cancelar</button>
+        <button class="seo-btn seo-btn-outline" onclick="updateEmailPreview()">📋 Actualizar Vista Previa</button>
+        <button class="seo-btn seo-btn-primary" id="btn-send-email" onclick="sendEmail()">📧 Enviar Correo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SCRIPTS
+  ══════════════════════════════════════ -->
+  <script src="js/topics-email.js"></script>
+  <script>
+    const API_BASE = 'https://vps-a351882a.vps.ovh.net';
+    const token = localStorage.getItem('token');
+    if (!token) window.location.href = 'login.html';
+
+    let allCategories  = [];
+    let allTopics      = [];   // added topics (right panel)
+    let editingTopicId = null;
+    let deletingTopicId = null;
+    let pendingSourceTopic = null; // topic from source feed being added
+    let allDomainsData = [];       // domains from API
+    let allCompetitors = {};       // competitors.json: { site_key: [comp1, ...] }
+    let allAutoTopics  = [];       // auto-topic templates
+    let editingAutoTopicId = null;
+
+    /* ── Utilities ── */
+    function escHtml(s) {
+      return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('show');
+    }
+    function logout() {
+      localStorage.removeItem('token');
+      window.location.href = 'login.html';
+    }
+    function updateCharCount(input, counterId, max) {
+      const el = document.getElementById(counterId);
+      const len = input.value.length;
+      el.textContent = `${len}/${max} caracteres`;
+      el.className = 'char-counter' + (len > max * .9 ? (len >= max ? ' error' : ' warn') : '');
+    }
+
+    /* ── Clock & Date ── */
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('clock').textContent =
+        now.toLocaleTimeString('es-ES', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+    }
+    updateClock(); setInterval(updateClock, 1000);
+
+    const today = new Date();
+    document.getElementById('topics-date').textContent =
+      today.toLocaleDateString('es-ES', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+    /* ── Dark mode ── */
+    const themeToggle = document.getElementById('theme-toggle');
+    const iconMoon = document.getElementById('icon-moon');
+    const iconSun  = document.getElementById('icon-sun');
+    function applyDark() {
+      document.documentElement.setAttribute('data-theme','dark');
+      iconMoon.style.display = 'none'; iconSun.style.display = '';
+      localStorage.setItem('seo-theme','dark');
+    }
+    function applyLight() {
+      document.documentElement.removeAttribute('data-theme');
+      iconMoon.style.display = ''; iconSun.style.display = 'none';
+      localStorage.setItem('seo-theme','light');
+    }
+    if ((localStorage.getItem('seo-theme') || 'light') === 'dark') applyDark();
+    themeToggle.addEventListener('click', () =>
+      document.documentElement.getAttribute('data-theme') === 'dark' ? applyLight() : applyDark()
+    );
+
+    /* ── Sidebar toggle ── */
+    document.getElementById('sidebar-toggle').addEventListener('click', () =>
+      document.body.classList.toggle('minimenu'));
+
+    /* ── Modules dropdown ── */
+    const modulesToggle = document.getElementById('modules-toggle');
+    const modulesMenu   = document.getElementById('modules-menu');
+    modulesToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      modulesMenu.classList.toggle('show');
+      userMenu.classList.remove('show');
+    });
+
+    /* ── User dropdown ── */
+    const userTrigger = document.getElementById('user-trigger');
+    const userMenu    = document.getElementById('user-menu');
+    userTrigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      userMenu.classList.toggle('show');
+      modulesMenu.classList.remove('show');
+    });
+    document.addEventListener('click', () => {
+      modulesMenu.classList.remove('show');
+      userMenu.classList.remove('show');
+    });
+
+    /* ── Auth / load user ── */
+    async function loadUser() {
+      try {
+        const res = await fetch(`${API_BASE}/api/auth/me`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.status === 401) { logout(); return; }
+        const user = await res.json();
+        const username = user.email.split('@')[0];
+        document.getElementById('user-avatar').textContent  = username.slice(0,2).toUpperCase();
+        document.getElementById('dd-avatar').textContent    = username.slice(0,2).toUpperCase();
+        document.getElementById('user-name').textContent    = username;
+        document.getElementById('user-role').textContent    = user.role.name;
+        document.getElementById('dd-name').textContent      = username;
+        document.getElementById('dd-email').textContent     = user.email;
+        if (user.role.name === 'admin') {
+          document.getElementById('nav-users').style.display   = '';
+          document.getElementById('nav-domains').style.display = '';
+        }
+      } catch(e) { console.error(e); }
+    }
+
+    /* ── Load domains into header dropdown + feed filter ── */
+    async function loadDomains() {
+      try {
+        const res = await fetch(`${API_BASE}/api/domains/`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) return;
+        const domains = await res.json();
+        allDomainsData = domains;
+        if (!domains.length) return;
+        // Header dropdown
+        const catLabels = { nacionales:'Nacionales', regionales:'Regionales',
+          deportivos:'Deportivos', verticales:'Verticales', revistas:'Revistas' };
+        const grouped = {};
+        domains.forEach(d => {
+          const k = d.category.name;
+          if (!grouped[k]) grouped[k] = [];
+          grouped[k].push(d);
+        });
+        document.getElementById('modules-domain-list').innerHTML =
+          `<div class="divider" style="margin:.4rem 0"></div>` +
+          Object.entries(grouped).map(([cat, doms]) => `
+            <div style="padding:.4rem 1rem .15rem;font-size:.65rem;font-weight:700;
+              text-transform:uppercase;letter-spacing:.07em;color:var(--text-nav-label)">
+              ${escHtml(catLabels[cat] || cat)}
+            </div>
+            ${doms.map(d => `
+              <a href="${escHtml(d.full_url)}" target="_blank" rel="noopener">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="2" y1="12" x2="22" y2="12"/>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                </svg>
+                ${escHtml(d.domain)}
+              </a>
+            `).join('')}
+          `).join('');
+        // Feed domain filter
+        const sel = document.getElementById('feed-domain-filter');
+        domains.forEach(d => {
+          const opt = document.createElement('option');
+          opt.value = d.id; opt.textContent = d.domain;
+          sel.appendChild(opt);
+        });
+      } catch(e) { console.error(e); }
+    }
+
+    /* ── Load competitors JSON ── */
+    async function loadCompetitors() {
+      try {
+        const res = await fetch('https://estaticos-data.prensaiberica.es/statics/data/content/json/hot_topics/competitors.json');
+        allCompetitors = await res.json();
+      } catch(e) { console.error('Error loading competitors:', e); }
+    }
+
+    /* ── Update competitor dropdown based on selected domain ── */
+    function updateCompetitorDropdown(domainId) {
+      const sel = document.getElementById('feed-competitor-filter');
+      sel.innerHTML = '<option value="">Todos los competidores</option>';
+      if (!domainId) { applyFilters(); return; }
+
+      const domain = allDomainsData.find(d => d.id === parseInt(domainId));
+      if (!domain) { applyFilters(); return; }
+
+      // Extract site key: part before first '.' lowercased
+      const siteKey = domain.domain.split('.')[0].toLowerCase();
+      const competitors = allCompetitors[siteKey] || [];
+
+      if (competitors.length) {
+        competitors.forEach(c => {
+          const opt = document.createElement('option');
+          opt.value = c; opt.textContent = c;
+          sel.appendChild(opt);
+        });
+      } else {
+        const opt = document.createElement('option');
+        opt.disabled = true;
+        opt.textContent = 'Sin competidores configurados';
+        sel.appendChild(opt);
+      }
+      applyFilters();
+    }
+
+    document.getElementById('feed-domain-filter').addEventListener('change', function() {
+      updateCompetitorDropdown(this.value); // actualiza competidores + llama applyFilters()
+    });
+    document.getElementById('feed-competitor-filter').addEventListener('change', applyFilters);
+
+    /* ══════════════════════════════════════
+       CATEGORIES
+    ══════════════════════════════════════ */
+    async function fetchCategories() {
+      try {
+        const res = await fetch(`${API_BASE}/api/topics/categories`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) return;
+        allCategories = await res.json();
+        populateCategorySelect();
+        renderCatManagerList();
+      } catch(e) { console.error(e); }
+    }
+
+    function populateCategorySelect(selectedId) {
+      const sel = document.getElementById('f-topic-category');
+      sel.innerHTML = `<option value="">Selecciona categoría</option>` +
+        allCategories.map(c =>
+          `<option value="${c.id}" ${c.id === selectedId ? 'selected' : ''}>${escHtml(c.name)}</option>`
+        ).join('');
+    }
+
+    function openNewCategoryInline() {
+      const el = document.getElementById('new-cat-inline');
+      el.style.display = el.style.display === 'none' ? '' : 'none';
+      if (el.style.display !== 'none') document.getElementById('f-new-cat-name').focus();
+    }
+
+    async function saveNewCategory() {
+      const name = document.getElementById('f-new-cat-name').value.trim();
+      const err  = document.getElementById('new-cat-error');
+      if (!name) { err.textContent = 'Introduce un nombre'; err.classList.add('show'); return; }
+      try {
+        const res = await fetch(`${API_BASE}/api/topics/categories`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name })
+        });
+        if (!res.ok) { const d = await res.json(); err.textContent = d.detail || 'Error'; err.classList.add('show'); return; }
+        err.textContent = ''; err.classList.remove('show');
+        document.getElementById('f-new-cat-name').value = '';
+        document.getElementById('new-cat-inline').style.display = 'none';
+        await fetchCategories();
+        populateCategorySelect();
+      } catch(e) { err.textContent = 'Error de red'; err.classList.add('show'); }
+    }
+
+    function openCatManager() {
+      renderCatManagerList();
+      document.getElementById('modal-cat-manager').classList.add('show');
+    }
+
+    function renderCatManagerList() {
+      const el = document.getElementById('cat-manager-list');
+      const fixed    = allCategories.filter(c => c.is_fixed);
+      const temporal = allCategories.filter(c => !c.is_fixed);
+
+      const rowFixed = c => `
+        <div class="cat-manager-row">
+          <span style="font-size:.8rem;font-weight:500;color:var(--text-main)">${escHtml(c.name)}</span>
+          <div style="display:flex;gap:.3rem">
+            <button class="seo-btn seo-btn-icon" title="Renombrar" onclick="editCatInManager(${c.id},'${escHtml(c.name)}')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              </svg>
+            </button>
+            <button class="seo-btn seo-btn-icon" title="Categoría fija (no eliminable)" style="color:#f59e0b;cursor:default" disabled>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </button>
+          </div>
+        </div>`;
+
+      const rowTemporal = c => `
+        <div class="cat-manager-row">
+          <span style="font-size:.8rem;font-weight:500;color:var(--text-main)">${escHtml(c.name)}</span>
+          <div style="display:flex;gap:.3rem">
+            <button class="seo-btn seo-btn-icon" title="Editar" onclick="editCatInManager(${c.id},'${escHtml(c.name)}')">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              </svg>
+            </button>
+            <button class="seo-btn seo-btn-icon" title="Eliminar" style="color:#ef4444" onclick="deleteCatFromManager(${c.id})">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                <path d="M10 11v6"/><path d="M14 11v6"/>
+                <path d="M9 6V4h6v2"/>
+              </svg>
+            </button>
+          </div>
+        </div>`;
+
+      el.innerHTML = `
+        <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;
+          color:var(--primary);display:flex;align-items:center;gap:.4rem;padding:.4rem .5rem .2rem">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke-width="2" style="stroke:currentColor">
+            <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          Categorías fijas
+        </div>
+        ${fixed.length ? fixed.map(rowFixed).join('') : '<div style="color:var(--text-muted);font-size:.75rem;padding:.3rem .5rem">—</div>'}
+        <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;
+          color:var(--text-muted);display:flex;align-items:center;gap:.4rem;padding:.75rem .5rem .2rem;margin-top:.25rem">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke-width="2" style="stroke:currentColor">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+          Categorías temporales
+        </div>
+        ${temporal.length ? temporal.map(rowTemporal).join('') : '<div style="color:var(--text-muted);font-size:.75rem;padding:.3rem .5rem">Sin categorías temporales</div>'}
+      `;
+    }
+
+    function editCatInManager(id, name) {
+      const newName = prompt('Nuevo nombre:', name);
+      if (!newName || newName.trim() === name) return;
+      fetch(`${API_BASE}/api/topics/categories/${id}`, {
+        method: 'PUT',
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: newName.trim() })
+      }).then(r => r.ok ? fetchCategories() : r.json().then(d => alert(d.detail || 'Error')));
+    }
+
+    function deleteCatFromManager(id) {
+      if (!confirm('¿Eliminar esta categoría? Los temas asociados quedarán sin categoría.')) return;
+      fetch(`${API_BASE}/api/topics/categories/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      }).then(() => fetchCategories());
+    }
+
+    async function saveCatFromManager() {
+      const name = document.getElementById('f-catmgr-name').value.trim();
+      const err  = document.getElementById('catmgr-error');
+      if (!name) { err.textContent = 'Introduce un nombre'; err.classList.add('show'); return; }
+      try {
+        const res = await fetch(`${API_BASE}/api/topics/categories`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name })
+        });
+        if (!res.ok) { const d = await res.json(); err.textContent = d.detail || 'Error'; err.classList.add('show'); return; }
+        err.textContent = ''; err.classList.remove('show');
+        document.getElementById('f-catmgr-name').value = '';
+        await fetchCategories();
+      } catch(e) { err.textContent = 'Error de red'; err.classList.add('show'); }
+    }
+
+    /* ══════════════════════════════════════
+       ADDED TOPICS (right panel)
+    ══════════════════════════════════════ */
+    async function fetchTopics() {
+      try {
+        const res = await fetch(`${API_BASE}/api/topics/added`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.status === 401) { logout(); return; }
+        if (!res.ok) return;
+        allTopics = await res.json();
+        renderTopics();
+        updateStats();
+      } catch(e) { console.error(e); }
+    }
+
+    function renderTopics() {
+      const el = document.getElementById('added-list');
+      const badge = document.getElementById('added-count-badge');
+      badge.textContent = allTopics.length;
+
+      if (!allTopics.length) {
+        el.innerHTML = `<div style="text-align:center;padding:2rem;color:var(--text-muted);font-size:.8rem">Sin temas añadidos</div>`;
+        return;
+      }
+
+      // Group by category
+      const grouped = {};
+      const uncategorized = [];
+      allTopics.forEach(t => {
+        if (t.category) {
+          const k = t.category.name;
+          if (!grouped[k]) grouped[k] = [];
+          grouped[k].push(t);
+        } else {
+          uncategorized.push(t);
+        }
+      });
+      if (uncategorized.length) grouped['Recurrentes'] = uncategorized;
+
+      el.innerHTML = Object.entries(grouped).map(([cat, topics]) => `
+        <div class="added-group-label">
+          ${escHtml(cat.toUpperCase())}
+          <span style="font-size:.65rem;font-weight:600;background:var(--border-light);
+            border-radius:20px;padding:.05rem .35rem;color:var(--text-muted)">${topics.length}</span>
+        </div>
+        ${topics.map(t => `
+          <div class="added-item">
+            <div class="added-item-title">${escHtml(t.title)}</div>
+            <div class="added-item-actions">
+              <button class="seo-btn seo-btn-icon" title="Editar" onclick="openEditTopic(${t.id})">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+              </button>
+              <button class="seo-btn seo-btn-icon" title="Eliminar" style="color:#ef4444" onclick="openDeleteTopic(${t.id},'${escHtml(t.title)}')">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                  <polyline points="3 6 5 6 21 6"/>
+                  <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                  <path d="M10 11v6"/><path d="M14 11v6"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        `).join('')}
+      `).join('');
+    }
+
+    function updateStats() {
+      document.getElementById('stat-added').textContent = allTopics.length;
+      document.getElementById('stat-sent').textContent =
+        allTopics.filter(t => t.sent_at).length;
+    }
+
+    /* ── Modal: Add topic ── */
+    function clearTopicForm() {
+      document.getElementById('f-topic-title').value = '';
+      document.getElementById('f-topic-category').value = '';
+      document.getElementById('f-topic-url').value = '';
+      document.getElementById('f-topic-include-url').checked = false;
+      document.getElementById('f-topic-observation').value = '';
+      document.getElementById('topic-form-error').textContent = '';
+      document.getElementById('topic-form-error').classList.remove('show');
+      document.getElementById('char-count-title').textContent = 'Máximo 80 caracteres';
+      document.getElementById('char-count-title').className = 'char-counter';
+      document.getElementById('original-news-wrap').style.display = 'none';
+      document.getElementById('new-cat-inline').style.display = 'none';
+    }
+
+    function openAddManual() {
+      editingTopicId = null;
+      pendingSourceTopic = null;
+      clearTopicForm();
+      populateCategorySelect();
+      document.getElementById('topic-modal-title').textContent = '+ Añadir tema manual';
+      document.getElementById('topic-save-btn').textContent = 'Añadir tema';
+      document.getElementById('modal-topic').classList.add('show');
+      setTimeout(() => document.getElementById('f-topic-title').focus(), 150);
+    }
+
+    function openAddFromSource(title, url, sourceName, origUrl, ageHours) {
+      editingTopicId = null;
+      pendingSourceTopic = { original_source: sourceName, original_url: origUrl };
+      clearTopicForm();
+      populateCategorySelect();
+      document.getElementById('topic-modal-title').textContent = '+ Añadir tema';
+      document.getElementById('topic-save-btn').textContent = 'Añadir tema';
+      // Fill original news card
+      document.getElementById('original-news-wrap').style.display = '';
+      document.getElementById('orig-title').textContent = title;
+      document.getElementById('orig-source').textContent = sourceName;
+      document.getElementById('orig-score').textContent = '—';
+      document.getElementById('orig-time').innerHTML = timeBadgeHtml(ageHours || 0);
+      document.getElementById('orig-desc').textContent = origUrl;
+      // Pre-fill form
+      document.getElementById('f-topic-title').value = title.slice(0, 80);
+      document.getElementById('f-topic-url').value   = url || '';
+      updateCharCount(document.getElementById('f-topic-title'), 'char-count-title', 80);
+      document.getElementById('modal-topic').classList.add('show');
+    }
+
+    function openEditTopic(id) {
+      const t = allTopics.find(x => x.id === id);
+      if (!t) return;
+      editingTopicId = id;
+      pendingSourceTopic = null;
+      clearTopicForm();
+      populateCategorySelect(t.category?.id);
+      document.getElementById('topic-modal-title').textContent = 'Editar tema';
+      document.getElementById('topic-save-btn').textContent = 'Guardar';
+      document.getElementById('f-topic-title').value       = t.title;
+      document.getElementById('f-topic-url').value         = t.url || '';
+      document.getElementById('f-topic-include-url').checked = t.include_url;
+      document.getElementById('f-topic-observation').value  = t.observation || '';
+      updateCharCount(document.getElementById('f-topic-title'), 'char-count-title', 80);
+      document.getElementById('modal-topic').classList.add('show');
+    }
+
+    async function saveTopic() {
+      const title  = document.getElementById('f-topic-title').value.trim();
+      const catId  = document.getElementById('f-topic-category').value;
+      const url    = document.getElementById('f-topic-url').value.trim();
+      const incUrl = document.getElementById('f-topic-include-url').checked;
+      const obs    = document.getElementById('f-topic-observation').value.trim();
+      const errEl  = document.getElementById('topic-form-error');
+      const btn    = document.getElementById('topic-save-btn');
+
+      if (!title) { errEl.textContent = 'El título es obligatorio'; errEl.classList.add('show'); return; }
+
+      btn.disabled = true; btn.textContent = 'Guardando...';
+      errEl.textContent = ''; errEl.classList.remove('show');
+
+      try {
+        let res;
+        if (editingTopicId) {
+          res = await fetch(`${API_BASE}/api/topics/added/${editingTopicId}`, {
+            method: 'PUT',
+            headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              title, url: url || null, include_url: incUrl,
+              observation: obs || null, category_id: catId ? parseInt(catId) : null
+            })
+          });
+        } else {
+          const body = {
+            title, url: url || null, include_url: incUrl,
+            observation: obs || null, category_id: catId ? parseInt(catId) : null,
+            ...(pendingSourceTopic || {})
+          };
+          res = await fetch(`${API_BASE}/api/topics/added`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+          });
+        }
+        if (!res.ok) { const d = await res.json(); errEl.textContent = d.detail || 'Error'; errEl.classList.add('show'); return; }
+        closeModal('modal-topic');
+        await fetchTopics();
+      } catch(e) { errEl.textContent = 'Error de red'; errEl.classList.add('show'); }
+      finally { btn.disabled = false; btn.textContent = editingTopicId ? 'Guardar' : 'Añadir tema'; }
+    }
+
+    /* ── Modal: Delete topic ── */
+    function openDeleteTopic(id, title) {
+      deletingTopicId = id;
+      document.getElementById('delete-topic-name').textContent = `"${title}"`;
+      document.getElementById('modal-delete-topic').classList.add('show');
+    }
+
+    async function confirmDeleteTopic() {
+      const btn = document.getElementById('delete-topic-btn');
+      btn.disabled = true; btn.textContent = 'Eliminando...';
+      try {
+        await fetch(`${API_BASE}/api/topics/added/${deletingTopicId}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        closeModal('modal-delete-topic');
+        await fetchTopics();
+      } catch(e) { alert('Error de red'); }
+      finally { btn.disabled = false; btn.textContent = 'Eliminar'; deletingTopicId = null; }
+    }
+
+    /* ══════════════════════════════════════
+       SOURCES + CENTER FEED
+    ══════════════════════════════════════ */
+    let currentSource = 'hot_topics';
+    let allFeedItems  = [];
+
+    // Source definitions (each will have its own loader when integrated)
+    const SOURCES = {
+      hot_topics: {
+        title: '🔥 Hot Topics',
+        load: loadHotTopics,
+      },
+      eventos: { title: '🏆 Eventos Deportivos', load: loadStub.bind(null,'eventos') },
+      twitter:  { title: '𝕏 Tendencias Twitter X', load: loadStub.bind(null,'twitter') },
+      prensa:   { title: '📰 Prensa', load: loadStub.bind(null,'prensa') },
+      rrss:     { title: '📱 Redes Sociales', load: loadStub.bind(null,'rrss') },
+    };
+
+    function selectSource(card, sourceId) {
+      document.querySelectorAll('.source-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      currentSource = sourceId;
+      const src = SOURCES[sourceId];
+      document.getElementById('feed-source-title').textContent = src.title;
+      document.getElementById('feed-items').innerHTML =
+        `<div style="text-align:center;padding:3rem;color:var(--text-muted);font-size:.85rem">Cargando...</div>`;
+      src.load();
+    }
+
+    function applyFilters() {
+      const domainId   = document.getElementById('feed-domain-filter').value;
+      const competitor = document.getElementById('feed-competitor-filter').value;
+      let filtered;
+
+      if (competitor) {
+        // Competidor específico → solo sus topics
+        filtered = allFeedItems.filter(item => item.source === competitor);
+      } else if (domainId) {
+        // Dominio propio concreto (sin competidor) → topics de ese dominio
+        const domain = allDomainsData.find(d => d.id === parseInt(domainId));
+        if (domain) {
+          const siteKey = domain.domain.split('.')[0].toLowerCase();
+          filtered = allFeedItems.filter(item => item.source === siteKey);
+        } else {
+          filtered = allFeedItems;
+        }
+      } else {
+        // "Todos los dominios" → topics de TODOS nuestros dominios propios
+        const ourKeys = new Set(allDomainsData.map(d => d.domain.split('.')[0].toLowerCase()));
+        filtered = allFeedItems.filter(item => ourKeys.has(item.source));
+      }
+
+      renderFeedItems(filtered);
+    }
+
+    // permanence = horas de permanencia en hot topics (1–47+)
+    // ≤1h = "Nuevo", <4h = verde, <24h = naranja, ≥24h = rojo
+    function timeBadgeHtml(hours) {
+      if (hours <= 1) {
+        return `<span class="badge-nuevo"><span style="width:6px;height:6px;border-radius:50%;background:#10b981;flex-shrink:0"></span>Nuevo</span>`;
+      }
+      let label, color;
+      if (hours < 4)  { label = hours + 'h'; color = '#10b981'; }
+      else if (hours < 24) { label = hours + 'h'; color = '#f59e0b'; }
+      else                 { label = Math.round(hours / 24) + 'd'; color = '#ef4444'; }
+      return `<span class="badge-time" style="color:${color}">${label}</span>`;
+    }
+
+    function renderFeedItems(items) {
+      const el = document.getElementById('feed-items');
+      document.getElementById('feed-count').textContent = `${items.length} temas`;
+      if (!items.length) {
+        el.innerHTML = `<div style="text-align:center;padding:3rem;color:var(--text-muted);font-size:.85rem">Sin resultados</div>`;
+        return;
+      }
+      el.innerHTML = items.map(item => {
+        const safeTitle  = escHtml(item.title);
+        const safeUrl    = escHtml(item.url);
+        const safeSource = escHtml(item.source || '');
+        return `
+          <div class="topic-card">
+            <div class="topic-card-header">
+              <div class="topic-card-title" onclick="window.open('${safeUrl}','_blank')">${safeTitle}</div>
+              <div class="topic-badges">
+                ${timeBadgeHtml(item.age_hours || 0)}
+                ${item.source ? `<span class="badge-source">${safeSource}</span>` : ''}
+              </div>
+            </div>
+            <div class="topic-card-url">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="2" style="stroke:currentColor;flex-shrink:0">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+              </svg>
+              ${safeUrl}
+            </div>
+            <div class="topic-card-actions">
+              <button class="seo-btn seo-btn-outline" style="font-size:.72rem;padding:.3rem .65rem"
+                      onclick="window.open('${safeUrl}','_blank')">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke-width="2" style="stroke:currentColor">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+                Ver
+              </button>
+              <button class="seo-btn seo-btn-primary" style="font-size:.72rem;padding:.3rem .65rem"
+                      onclick="openAddFromSource('${safeTitle}','${safeUrl}','${safeSource}','${safeUrl}',${item.age_hours || 0})">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke-width="2.5" style="stroke:currentColor">
+                  <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Añadir tema
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Hot Topics — carga desde JSON de Prensa Ibérica
+    async function loadHotTopics() {
+      const feedEl = document.getElementById('feed-items');
+      feedEl.innerHTML = `<div style="text-align:center;padding:3rem;color:var(--text-muted);font-size:.85rem">Cargando hot topics...</div>`;
+      try {
+        const res = await fetch('https://estaticos-data.prensaiberica.es/statics/data/content/json/hot_topics/last_screenshot.json');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+
+        // Flatten: array of { site, topics: [{url, hot_topic, permanence}] }
+        allFeedItems = [];
+        const list = Array.isArray(data) ? data : Object.values(data);
+        list.forEach(entry => {
+          (entry.topics || []).forEach(t => {
+            allFeedItems.push({
+              title: t.hot_topic,
+              url: t.url,
+              source: entry.site,
+              age_hours: t.permanence   // permanence = horas de exposición en hot topics
+            });
+          });
+        });
+
+        document.getElementById('src-count-hot_topics').textContent = `${allFeedItems.length} hot topics`;
+        document.getElementById('stat-detected').textContent = allFeedItems.length;
+        document.getElementById('sources-active-count').textContent = '5 activas';
+        applyFilters();
+      } catch(e) {
+        console.error(e);
+        feedEl.innerHTML = `<div style="text-align:center;padding:3rem;color:var(--text-muted);font-size:.85rem">
+          Error cargando Hot Topics. Comprueba la conexión.</div>`;
+      }
+    }
+
+    // Stub loader for sources not yet integrated
+    function loadStub(sourceId) {
+      allFeedItems = [];
+      const counts = { eventos: '0 nuevas', twitter: '10 nuevas', prensa: '12 noticias', rrss: '15 nuevas' };
+      document.getElementById(`src-count-${sourceId}`).textContent = counts[sourceId] || '—';
+      document.getElementById('feed-items').innerHTML =
+        `<div style="text-align:center;padding:3rem;color:var(--text-muted);font-size:.85rem">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke-width="1.5" style="stroke:var(--border);margin-bottom:.75rem;display:block;margin-left:auto;margin-right:auto">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r=".5" fill="currentColor"/>
+          </svg>
+          Esta fuente aún no está integrada.<br>Próximamente.
+        </div>`;
+      document.getElementById('feed-count').textContent = '—';
+    }
+
+    function refreshAll() {
+      const src = SOURCES[currentSource];
+      if (src) src.load();
+    }
+
+    /* ══════════════════════════════════════
+       AUTO TOPICS
+    ══════════════════════════════════════ */
+    async function fetchAutoTopics() {
+      try {
+        const res = await fetch(`${API_BASE}/api/topics/auto`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) return;
+        allAutoTopics = await res.json();
+      } catch(e) { console.error(e); }
+    }
+
+    function renderAutoTopicsList() {
+      const el = document.getElementById('auto-topics-list');
+      if (!allAutoTopics.length) {
+        el.innerHTML = `<div style="font-size:.8rem;color:var(--text-muted);text-align:center;padding:1rem">Sin temas automáticos</div>`;
+        return;
+      }
+      el.innerHTML = allAutoTopics.map(a => `
+        <div class="cat-row" id="auto-row-${a.id}">
+          <span class="cat-row-name">${escHtml(a.title)}</span>
+          <div class="cat-row-actions">
+            <button class="seo-btn seo-btn-icon" title="Editar" onclick="openEditAutoTopic(${a.id})">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2" style="stroke:currentColor">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              </svg>
+            </button>
+            <button class="seo-btn seo-btn-icon" title="Eliminar" style="color:#ef4444" onclick="deleteAutoTopic(${a.id})">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2" style="stroke:currentColor">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openAutoTopicsModal() {
+      editingAutoTopicId = null;
+      document.getElementById('f-auto-topic-input').value = '';
+      document.getElementById('auto-topic-error').textContent = '';
+      document.getElementById('auto-topic-error').classList.remove('show');
+      renderAutoTopicsList();
+      document.getElementById('modal-auto-topics').classList.add('show');
+      setTimeout(() => document.getElementById('f-auto-topic-input').focus(), 150);
+    }
+
+    async function saveNewAutoTopic() {
+      const input = document.getElementById('f-auto-topic-input');
+      const err   = document.getElementById('auto-topic-error');
+      const title = input.value.trim();
+      if (!title) { err.textContent = 'Escribe un título'; err.classList.add('show'); return; }
+      if (editingAutoTopicId) {
+        try {
+          const res = await fetch(`${API_BASE}/api/topics/auto/${editingAutoTopicId}`, {
+            method: 'PUT',
+            headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title })
+          });
+          if (!res.ok) { const d = await res.json(); err.textContent = d.detail || 'Error'; err.classList.add('show'); return; }
+          editingAutoTopicId = null;
+          input.value = '';
+          err.textContent = ''; err.classList.remove('show');
+          document.querySelector('.seo-btn.seo-btn-primary[onclick="saveNewAutoTopic()"]').textContent = 'Añadir';
+        } catch(e) { err.textContent = 'Error de red'; err.classList.add('show'); return; }
+      } else {
+        try {
+          const res = await fetch(`${API_BASE}/api/topics/auto`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title })
+          });
+          if (!res.ok) { const d = await res.json(); err.textContent = d.detail || 'Error'; err.classList.add('show'); return; }
+          input.value = '';
+          err.textContent = ''; err.classList.remove('show');
+        } catch(e) { err.textContent = 'Error de red'; err.classList.add('show'); return; }
+      }
+      await fetchAutoTopics();
+      renderAutoTopicsList();
+    }
+
+    function openEditAutoTopic(id) {
+      const auto = allAutoTopics.find(a => a.id === id);
+      if (!auto) return;
+      editingAutoTopicId = id;
+      const input = document.getElementById('f-auto-topic-input');
+      input.value = auto.title;
+      document.querySelector('#modal-auto-topics .seo-btn.seo-btn-primary').textContent = 'Guardar';
+      input.focus();
+    }
+
+    async function deleteAutoTopic(id) {
+      if (!confirm('¿Eliminar este tema automático?')) return;
+      try {
+        await fetch(`${API_BASE}/api/topics/auto/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        await fetchAutoTopics();
+        renderAutoTopicsList();
+      } catch(e) { console.error(e); }
+    }
+
+    async function applyAutoTopics() {
+      try {
+        const res = await fetch(`${API_BASE}/api/topics/auto/apply`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.ok) await fetchTopics();
+      } catch(e) { console.error(e); }
+    }
+
+    /* ── Init ── */
+    async function init() {
+      await loadUser();
+      await Promise.all([loadDomains(), loadCompetitors(), fetchCategories(), fetchAutoTopics(), fetchTopics()]);
+      if (allTopics.length === 0 && allAutoTopics.length > 0) {
+        await applyAutoTopics();
+      }
+      loadHotTopics();
+    }
+    init();
+  </script>
+</body>
+</html>
