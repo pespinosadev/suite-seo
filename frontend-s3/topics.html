@@ -747,7 +747,7 @@
         });
         if (res.status === 401) { logout(); return; }
         if (!res.ok) return;
-        allTopics = await res.json();
+        allTopics = (await res.json()).filter(t => t.is_draft);
         renderTopics();
         updateStats();
       } catch(e) { console.error(e); }
@@ -821,8 +821,18 @@
 
     function updateStats() {
       document.getElementById('stat-added').textContent = allTopics.length;
-      document.getElementById('stat-sent').textContent =
-        allTopics.filter(t => t.sent_at).length;
+    }
+
+    async function updateSentStat() {
+      try {
+        const res = await fetch(`${API_BASE}/api/topics/email-logs`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const logs = await res.json();
+          document.getElementById('stat-sent').textContent = logs.length;
+        }
+      } catch (_) {}
     }
 
     /* ── Modal: Add topic ── */
@@ -899,6 +909,7 @@
       const btn    = document.getElementById('topic-save-btn');
 
       if (!title) { errEl.textContent = 'El título es obligatorio'; errEl.classList.add('show'); return; }
+      if (!catId) { errEl.textContent = 'La categoría es obligatoria'; errEl.classList.add('show'); return; }
 
       // Detección de duplicados (solo al añadir, no al editar)
       let pendingDupId = null;
@@ -1287,7 +1298,7 @@
     /* ── Init ── */
     async function init() {
       await initLayout('topics');
-      await Promise.all([loadDomains(), loadCompetitors(), fetchCategories(), fetchAutoTopics(), fetchTopics()]);
+      await Promise.all([loadDomains(), loadCompetitors(), fetchCategories(), fetchAutoTopics(), fetchTopics(), updateSentStat()]);
       if (allTopics.length === 0 && allAutoTopics.length > 0) {
         await applyAutoTopics();
       }

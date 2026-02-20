@@ -181,7 +181,12 @@ function generateEmailHtml() {
     const colW  = Math.floor(640 / cols.length);
     const cells = cols.map(col =>
       `<td width="${colW}" valign="top" style="padding:6px 10px;font-size:12px;font-family:Arial,sans-serif;vertical-align:top">
-        ${col.map(t => `• ${escHtml(t.title)}`).join('<br>')}
+        ${col.map(t => {
+          const titleHtml = t.include_url && t.url
+            ? `<a href="${escHtml(t.url)}" style="color:#1F5C99">${escHtml(t.title)}</a>`
+            : escHtml(t.title);
+          return `• ${titleHtml}`;
+        }).join('<br>')}
       </td>`
     ).join('');
     return `
@@ -335,7 +340,19 @@ async function sendEmail() {
     }
 
     closeModal('modal-send-email');
-    await fetchTopics();           // refresca lista (topics ya marcados como enviados)
+    // Success overlay — se cierra manualmente y refresca
+    const date = todayFormatted();
+    const overlay = document.createElement('div');
+    overlay.id = 'email-sent-overlay';
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;display:flex;align-items:center;justify-content:center';
+    overlay.innerHTML = `
+      <div style="background:var(--bg-card);border-radius:14px;padding:2.5rem 3rem;text-align:center;max-width:400px;width:90%;box-shadow:0 8px 40px rgba(0,0,0,.25)">
+        <div style="font-size:2.5rem;margin-bottom:1rem">✅</div>
+        <div style="font-size:1.05rem;font-weight:700;margin-bottom:.35rem;color:var(--text-primary)">Temas del día</div>
+        <div style="font-size:.85rem;color:var(--text-muted);margin-bottom:1.75rem">${date} — Correo enviado correctamente</div>
+        <button class="seo-btn seo-btn-primary" onclick="document.getElementById('email-sent-overlay').remove();fetchTopics();duplicateTopicIds.clear();">Cerrar</button>
+      </div>`;
+    document.body.appendChild(overlay);
   } catch (e) {
     console.error(e);
     alert('Error de red al enviar el correo.');

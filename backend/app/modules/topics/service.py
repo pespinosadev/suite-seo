@@ -326,3 +326,12 @@ async def list_email_logs(db: AsyncSession) -> list[EmailLog]:
 async def get_email_log(db: AsyncSession, log_id: int) -> Optional[EmailLog]:
     result = await db.execute(select(EmailLog).where(EmailLog.id == log_id))
     return result.scalar_one_or_none()
+
+
+async def delete_email_log(db: AsyncSession, log_id: int) -> None:
+    result = await db.execute(select(EmailLog).where(EmailLog.id == log_id))
+    log = result.scalar_one_or_none()
+    if not log:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Registro no encontrado")
+    await db.delete(log)
+    await db.commit()

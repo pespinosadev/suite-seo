@@ -166,3 +166,12 @@ async def get_email_log(
     if not log:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Registro no encontrado")
     return log
+
+
+@router.delete("/email-logs/{log_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_email_log(
+    log_id: int,
+    db: AsyncSession = Depends(get_db),
+    _=Depends(require_role("admin")),
+):
+    await service.delete_email_log(db, log_id)

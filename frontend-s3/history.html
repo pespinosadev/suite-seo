@@ -37,6 +37,7 @@
                 <th>Destinatarios</th>
                 <th>Asunto</th>
                 <th style="text-align:center">Temas</th>
+                <th id="th-delete" style="display:none"></th>
               </tr>
             </thead>
             <tbody id="history-tbody">
@@ -78,6 +79,7 @@
   <script>
     const API_BASE = 'https://vps-a351882a.vps.ovh.net';
     const token = localStorage.getItem('token');
+    let isAdmin = false;
 
     function escHtml(s) {
       return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -109,16 +111,29 @@
 
     function renderHistory(logs) {
       const tbody = document.getElementById('history-tbody');
+      const cols = isAdmin ? 6 : 5;
       if (!logs.length) {
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--text-muted)">Todavía no se ha enviado ningún correo</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="${cols}" style="text-align:center;padding:2rem;color:var(--text-muted)">Todavía no se ha enviado ningún correo</td></tr>`;
         return;
       }
+      if (isAdmin) document.getElementById('th-delete').style.display = '';
       tbody.innerHTML = logs.map(log => {
         const recips = Array.isArray(log.recipients) ? log.recipients : [];
         const recipLabel = recips.length === 1
           ? escHtml(recips[0])
           : `${recips.length} destinatarios`;
         const recipTitle = recips.join(', ');
+        const deleteCell = isAdmin
+          ? `<td style="text-align:center;white-space:nowrap" onclick="event.stopPropagation()">
+               <button class="seo-btn seo-btn-icon" title="Eliminar" style="color:#ef4444" onclick="deleteLog(${log.id})">
+                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke="currentColor">
+                   <polyline points="3 6 5 6 21 6"/>
+                   <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                   <path d="M10 11v6"/><path d="M14 11v6"/>
+                 </svg>
+               </button>
+             </td>`
+          : '';
         return `
           <tr style="cursor:pointer" onclick="openDetail(${log.id})" title="Ver correo">
             <td style="white-space:nowrap;color:var(--text-muted)">${escHtml(formatDate(log.sent_at))}</td>
@@ -128,8 +143,21 @@
             <td style="text-align:center">
               <span class="seo-pill seo-pill-muted">${log.topic_count}</span>
             </td>
+            ${deleteCell}
           </tr>`;
       }).join('');
+    }
+
+    async function deleteLog(id) {
+      if (!confirm('¿Eliminar este registro del historial?')) return;
+      try {
+        const res = await fetch(`${API_BASE}/api/topics/email-logs/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.ok) await fetchHistory();
+        else { const d = await res.json().catch(() => ({})); alert(d.detail || 'Error al eliminar'); }
+      } catch(e) { alert('Error de red'); }
     }
 
     async function openDetail(logId) {
@@ -165,7 +193,8 @@
     }
 
     async function init() {
-      await initLayout('topics'); // 'topics' = marca Temas del día como activo en sidebar
+      const user = await initLayout('topics');
+      isAdmin = !!(user && user.role.name === 'admin');
       await fetchHistory();
     }
     init();
