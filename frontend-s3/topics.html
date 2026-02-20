@@ -123,6 +123,14 @@
             <div class="email" id="dd-email">—</div>
           </div>
           <div class="divider"></div>
+          <a href="#" onclick="openMyAccountModal();return false">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2">
+              <circle cx="12" cy="8" r="4"/>
+              <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+            </svg>
+            Mi cuenta
+          </a>
+          <div class="divider"></div>
           <a href="#" onclick="logout();return false">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
@@ -610,6 +618,38 @@
   </div>
 
   <!-- ══════════════════════════════════════
+       MODAL: Mi cuenta
+  ══════════════════════════════════════ -->
+  <div class="seo-modal-backdrop" id="modal-my-account"
+       onclick="if(event.target===this)closeModal('modal-my-account')">
+    <div class="seo-modal" style="max-width:400px">
+      <div class="seo-modal-header">
+        <span>Mi cuenta</span>
+        <button class="seo-modal-close" onclick="closeModal('modal-my-account')">✕</button>
+      </div>
+      <div class="seo-modal-body" style="display:flex;flex-direction:column;gap:1rem">
+        <div style="font-size:.85rem;color:var(--text-secondary)" id="my-account-email">—</div>
+
+        <div>
+          <label style="font-size:.78rem;font-weight:600;color:var(--text-label);display:block;margin-bottom:.4rem">
+            Contraseña de correo (Office 365)
+          </label>
+          <p style="font-size:.75rem;color:var(--text-secondary);margin:0 0 .5rem">
+            Necesaria para enviar los correos desde tu cuenta. Se guarda una sola vez.
+          </p>
+          <input class="seo-input" type="password" id="my-smtp-password"
+                 placeholder="Tu contraseña de Office 365" autocomplete="new-password">
+          <div class="seo-form-error" id="my-account-error"></div>
+        </div>
+      </div>
+      <div class="seo-modal-footer">
+        <button class="seo-btn seo-btn-outline" onclick="closeModal('modal-my-account')">Cancelar</button>
+        <button class="seo-btn seo-btn-primary" onclick="saveSmtpPassword()">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
        SCRIPTS
   ══════════════════════════════════════ -->
   <script src="js/topics-email.js"></script>
@@ -638,6 +678,39 @@
     function logout() {
       localStorage.removeItem('token');
       window.location.href = 'login.html';
+    }
+
+    /* ── Mi cuenta ── */
+    function openMyAccountModal() {
+      const email = document.getElementById('user-name').textContent || '—';
+      document.getElementById('my-account-email').textContent = email;
+      document.getElementById('my-smtp-password').value = '';
+      document.getElementById('my-account-error').textContent = '';
+      document.getElementById('my-account-error').classList.remove('show');
+      document.getElementById('modal-my-account').classList.add('show');
+      setTimeout(() => document.getElementById('my-smtp-password').focus(), 150);
+    }
+
+    async function saveSmtpPassword() {
+      const input = document.getElementById('my-smtp-password');
+      const errEl = document.getElementById('my-account-error');
+      const val = input.value.trim();
+      if (!val) { errEl.textContent = 'Introduce tu contraseña de Office 365.'; errEl.classList.add('show'); return; }
+      errEl.classList.remove('show');
+      try {
+        const res = await fetch(`${API_BASE}/api/users/me/smtp-password`, {
+          method: 'PUT',
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ smtp_password: val }),
+        });
+        if (!res.ok) {
+          const d = await res.json().catch(() => ({}));
+          errEl.textContent = d.detail || 'Error al guardar.'; errEl.classList.add('show'); return;
+        }
+        closeModal('modal-my-account');
+      } catch (e) {
+        errEl.textContent = 'Error de red.'; errEl.classList.add('show');
+      }
     }
     function updateCharCount(input, counterId, max) {
       const el = document.getElementById(counterId);
