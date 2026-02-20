@@ -24,6 +24,7 @@ services:
       SMTP_USER: ${SMTP_USER:-}
       SMTP_PASSWORD: ${SMTP_PASSWORD:-}
       SMTP_FROM: ${SMTP_FROM:-}
+      SMTP_AUTH_DOMAIN: ${SMTP_AUTH_DOMAIN:-}
     depends_on:
       - seo_db
     networks:
