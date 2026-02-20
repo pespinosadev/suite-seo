@@ -512,6 +512,16 @@
     let editingAutoTopicId = null;
     let duplicateTopicIds = new Set(); // ids marcados como duplicado en esta sesión
 
+    /* ── Eventos Deportivos — sport icons ── */
+    const SPORT_ICONS = {
+      'Fútbol':'⚽','Fórmula 1':'🏎️','Ciclismo':'🚴',
+      'Baloncesto':'🏀','Tenis':'🎾','Golf':'⛳',
+      'Rugby':'🏉','Atletismo':'🏃','Natación':'🏊',
+      'Esquí':'⛷️','Boxeo':'🥊','JJ.OO.':'🏅',
+      'Motociclismo':'🏍️','Balonmano':'🤾','Voleibol':'🏐',
+    };
+    const DEFAULT_SPORT_ICON = '🏆';
+
     /* ── Utilities ── */
     function escHtml(s) {
       return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -1002,7 +1012,7 @@
         title: '🔥 Hot Topics',
         load: loadHotTopics,
       },
-      eventos: { title: '🏆 Eventos Deportivos', load: loadStub.bind(null,'eventos') },
+      eventos: { title: '🏆 Eventos Deportivos', load: loadEventos },
       twitter:  { title: '𝕏 Tendencias Twitter X', load: loadStub.bind(null,'twitter') },
       prensa:   { title: '📰 Prensa', load: loadStub.bind(null,'prensa') },
       rrss:     { title: '📱 Redes Sociales', load: loadStub.bind(null,'rrss') },
@@ -1016,6 +1026,13 @@
       document.getElementById('feed-source-title').textContent = src.title;
       document.getElementById('feed-items').innerHTML =
         `<div style="text-align:center;padding:3rem;color:var(--text-muted);font-size:.85rem">Cargando...</div>`;
+
+      // Mostrar filtros y leyenda solo en Hot Topics
+      const hotOnly = sourceId === 'hot_topics';
+      document.getElementById('feed-domain-filter').style.display    = hotOnly ? '' : 'none';
+      document.getElementById('feed-competitor-filter').style.display = hotOnly ? '' : 'none';
+      document.querySelector('.feed-legend').style.display            = hotOnly ? '' : 'none';
+
       src.load();
     }
 
@@ -1157,6 +1174,91 @@
         feedEl.innerHTML = `<div style="text-align:center;padding:3rem;color:var(--text-muted);font-size:.85rem">
           Error cargando Hot Topics. Comprueba la conexión.</div>`;
       }
+    }
+
+    // ── Eventos Deportivos ──────────────────────────────────────
+    async function loadEventos() {
+      allFeedItems = [];
+      document.getElementById('feed-items').innerHTML =
+        `<div style="text-align:center;padding:3rem;color:var(--text-muted);font-size:.85rem">Cargando…</div>`;
+      try {
+        const res = await fetch(`${API_BASE}/api/sports/events`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) throw new Error('Error ' + res.status);
+        const events = await res.json();
+        document.getElementById('src-count-eventos').textContent =
+          events.length ? `${events.length} eventos` : '0 eventos';
+        document.getElementById('feed-count').textContent =
+          events.length ? `${events.length} eventos` : '0';
+        if (!events.length) {
+          document.getElementById('feed-items').innerHTML =
+            `<div style="text-align:center;padding:3rem;color:var(--text-muted);font-size:.85rem">Sin eventos hoy</div>`;
+          return;
+        }
+        renderEventos(events);
+      } catch(e) {
+        document.getElementById('feed-items').innerHTML =
+          `<div style="text-align:center;padding:3rem;color:#ea4d4d;font-size:.85rem">Error al cargar eventos</div>`;
+      }
+    }
+
+    function renderEventos(events) {
+      const el = document.getElementById('feed-items');
+      const header = `
+        <div style="background:#1a1a1a;color:#fff;font-weight:700;font-size:.82rem;
+                    padding:.55rem 1rem;letter-spacing:.02em">
+          ${escHtml(events[0].day_name.toUpperCase())}
+          <span style="font-weight:400;font-size:.78rem;opacity:.8;margin-left:.5rem">
+            ${escHtml(events[0].event_date)}
+          </span>
+        </div>`;
+      const rows = events.map(ev => {
+        const icon = SPORT_ICONS[ev.deporte] || DEFAULT_SPORT_ICON;
+        const canal = ev.canal
+          ? `<div style="font-size:.7rem;color:var(--text-muted);display:flex;align-items:center;gap:.25rem;margin-top:.2rem">
+               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke-width="2" style="stroke:currentColor;flex-shrink:0">
+                 <rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/>
+               </svg>
+               ${escHtml(ev.canal)}
+             </div>`
+          : '';
+        const safeHora = ev.hora.replace(/'/g,"\\'");
+        const safeEv   = ev.evento.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+        return `
+          <div class="evento-row">
+            <div class="evento-sport">
+              <span style="font-size:1.3rem;line-height:1">${icon}</span>
+              <span style="font-size:.62rem;color:var(--text-muted);font-weight:600;
+                           text-align:center;line-height:1.2;margin-top:.1rem">${escHtml(ev.deporte)}</span>
+              <span style="font-size:.75rem;font-weight:700;color:var(--text-primary);margin-top:.15rem">${escHtml(ev.hora)}</span>
+            </div>
+            <div class="evento-info">
+              <div style="font-size:.64rem;font-weight:700;text-transform:uppercase;
+                          letter-spacing:.06em;color:var(--text-muted);margin-bottom:.18rem">
+                ${escHtml(ev.competicion)}
+              </div>
+              <div style="font-size:.82rem;font-weight:600;color:var(--text-primary);line-height:1.3">
+                ${escHtml(ev.evento)}
+              </div>
+              ${canal}
+            </div>
+            <button class="seo-btn seo-btn-primary"
+                    style="font-size:.7rem;padding:.3rem .65rem;white-space:nowrap;flex-shrink:0;align-self:center"
+                    onclick="addEventoAsTopic('${safeHora}','${safeEv}')">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke-width="2.5" style="stroke:currentColor">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+              Añadir
+            </button>
+          </div>`;
+      }).join('');
+      el.innerHTML = header + `<div style="padding:.15rem 0">${rows}</div>`;
+    }
+
+    function addEventoAsTopic(hora, evento) {
+      const title = `${hora} ${evento}`;
+      openAddFromSource(title, '', 'Eventos Deportivos', '', 0);
     }
 
     // Stub loader for sources not yet integrated

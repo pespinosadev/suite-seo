@@ -20,6 +20,9 @@ class Settings(BaseSettings):
     # Result: pespinosa@prensaiberica.es → pespinosa@renr.grupoepi.es
     SMTP_AUTH_DOMAIN: str = ""
 
+    # Sports events — API key used by n8n to POST daily sport events
+    SPORTS_API_KEY: str = ""
+
     @property
     def cors_origins_list(self) -> list[str]:
         return [o.strip() for o in self.CORS_ORIGINS.split(",") if o.strip()]

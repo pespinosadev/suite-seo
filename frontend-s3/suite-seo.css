@@ -1134,10 +1134,17 @@ html[data-theme="dark"] .badge-nuevo { background: #064e3b; color: #6ee7b7; }
   text-transform: uppercase;
   letter-spacing: .07em;
   color: var(--text-muted);
-  padding: .5rem 1rem .2rem;
+  padding: .35rem 1rem .25rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: var(--bg-body);
+  border-top: 1px solid var(--border);
+  margin-top: .1rem;
+}
+.added-group-label:first-child {
+  border-top: none;
+  margin-top: 0;
 }
 .added-item {
   display: flex;
@@ -1154,6 +1161,26 @@ html[data-theme="dark"] .badge-nuevo { background: #064e3b; color: #6ee7b7; }
   line-height: 1.3;
 }
 .added-item-actions { display: flex; gap: .2rem; flex-shrink: 0; }
+
+/* ── Eventos Deportivos feed ── */
+.evento-row {
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
+  padding: .6rem 1rem;
+  border-bottom: 1px solid var(--border-light);
+}
+.evento-row:last-child { border-bottom: none; }
+.evento-sport {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .05rem;
+  min-width: 52px;
+  padding-top: .1rem;
+}
+.evento-info { flex: 1; min-width: 0; }
+
 .added-actions {
   border-top: 1px solid var(--border);
   padding: .75rem 1rem;

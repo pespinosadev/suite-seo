@@ -10,6 +10,7 @@ from app.modules.auth.router import router as auth_router
 from app.modules.users.router import router as users_router
 from app.modules.domains.router import router as domains_router
 from app.modules.topics.router import router as topics_router
+from app.modules.sports.router import router as sports_router
 
 
 @asynccontextmanager
@@ -42,6 +43,7 @@ app.include_router(auth_router, prefix="/api/auth", tags=["auth"])
 app.include_router(users_router, prefix="/api/users", tags=["users"])
 app.include_router(domains_router, prefix="/api/domains", tags=["domains"])
 app.include_router(topics_router, prefix="/api/topics", tags=["topics"])
+app.include_router(sports_router, prefix="/api/sports", tags=["sports"])
 
 
 @app.get("/api/health", tags=["system"])
