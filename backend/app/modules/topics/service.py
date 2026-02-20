@@ -256,26 +256,25 @@ async def send_topics_email(
             detail="SMTP no configurado en el servidor. Añade SMTP_HOST al .env del VPS.",
         )
 
-    from_addr = settings.SMTP_FROM or settings.SMTP_USER
+    auth_user = settings.SMTP_USER
+    display_from = sender_email if sender_email else (settings.SMTP_FROM or auth_user)
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject
-    msg["From"] = from_addr
+    msg["From"] = display_from
     msg["To"] = ", ".join(recipients)
-    if sender_email:
-        msg["Reply-To"] = sender_email
     msg.attach(MIMEText(html_body, "html", "utf-8"))
 
     host, port = settings.SMTP_HOST, settings.SMTP_PORT
-    user, password = settings.SMTP_USER, settings.SMTP_PASSWORD
+    password = settings.SMTP_PASSWORD
 
     def _send() -> None:
         with smtplib.SMTP(host, port, timeout=15) as smtp:
             smtp.ehlo()
             smtp.starttls()
             smtp.ehlo()
-            if user:
-                smtp.login(user, password)
-            smtp.sendmail(from_addr, recipients, msg.as_bytes())
+            if auth_user:
+                smtp.login(auth_user, password)
+            smtp.sendmail(display_from, recipients, msg.as_bytes())
 
     try:
         await asyncio.get_event_loop().run_in_executor(None, _send)
