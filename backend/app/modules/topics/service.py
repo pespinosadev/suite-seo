@@ -68,13 +68,18 @@ async def delete_auto_topic(auto_id: int, db: AsyncSession) -> None:
 
 
 async def apply_auto_topics(db: AsyncSession) -> list[DailyTopic]:
+    # Resolve COMUNES category id
+    cat_result = await db.execute(select(TopicCategory).where(TopicCategory.name == "COMUNES"))
+    comunes = cat_result.scalar_one_or_none()
+    comunes_id = comunes.id if comunes else None
+
     result = await db.execute(
         select(AutoTopic).where(AutoTopic.is_active == True).order_by(AutoTopic.display_order)
     )
     autos = result.scalars().all()
     ids = []
     for auto in autos:
-        topic = DailyTopic(title=auto.title)
+        topic = DailyTopic(title=auto.title, category_id=comunes_id)
         db.add(topic)
         await db.flush()
         ids.append(topic.id)
