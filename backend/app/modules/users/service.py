@@ -114,7 +114,9 @@ async def update_my_profile(user_id: int, data: UpdateProfileRequest, db: AsyncS
         if not verify_password(data.current_password, user.hashed_password):
             raise HTTPException(status.HTTP_400_BAD_REQUEST, detail="Contraseña actual incorrecta")
         user.hashed_password = hash_password(data.new_password)
-    if data.smtp_password is not None:
+    if data.clear_smtp_password:
+        user.smtp_password = None
+    elif data.smtp_password is not None:
         user.smtp_password = data.smtp_password
     await db.commit()
     result = await db.execute(

@@ -239,7 +239,7 @@
         </div>
         <div class="seo-form-error" id="pw-error" style="margin-top:.5rem"></div>
         <div style="display:flex;justify-content:flex-end;margin-top:.75rem">
-          <button class="seo-btn seo-btn-primary" id="btn-save-pw" onclick="savePassword()">Guardar contraseña</button>
+          <button class="seo-btn seo-btn-primary" id="btn-save-pw" onclick="savePassword()">Cambiar contraseña</button>
         </div>
       </div>
 
@@ -250,11 +250,22 @@
           Necesaria para enviar los "Temas del día" desde tu cuenta de correo.
           Se guarda de forma segura y solo se usa para el envío de correos.
         </p>
-        <input class="seo-input" type="password" id="f-smtp-pw" placeholder="Tu contraseña de Office 365" autocomplete="new-password">
-        <div class="seo-form-error" id="smtp-error" style="margin-top:.4rem"></div>
-        <div style="display:flex;justify-content:flex-end;margin-top:.75rem">
-          <button class="seo-btn seo-btn-primary" id="btn-save-smtp" onclick="saveSmtp()">Guardar contraseña de correo</button>
+        <!-- Vista: contraseña guardada -->
+        <div id="smtp-saved-row" style="display:none;align-items:center;gap:.75rem;padding:.55rem .85rem;background:var(--card-alt-bg,rgba(0,0,0,.04));border:1px solid var(--border);border-radius:8px;margin-bottom:.75rem">
+          <span style="font-size:1.1rem;letter-spacing:.15em;color:var(--text-secondary)">••••••••</span>
+          <div style="flex:1"></div>
+          <button class="seo-btn" style="padding:.3rem .75rem;font-size:.78rem;color:#e5534b;border-color:#e5534b" onclick="clearSmtp()">Borrar</button>
+          <button class="seo-btn seo-btn-primary" style="padding:.3rem .75rem;font-size:.78rem" onclick="showSmtpInput()">Cambiar</button>
         </div>
+        <!-- Vista: input -->
+        <div id="smtp-input-row">
+          <input class="seo-input" type="password" id="f-smtp-pw" placeholder="Tu contraseña de Office 365" autocomplete="new-password">
+          <div style="display:flex;justify-content:flex-end;margin-top:.75rem;gap:.5rem">
+            <button class="seo-btn" id="btn-cancel-smtp" onclick="cancelSmtpInput()" style="display:none">Cancelar</button>
+            <button class="seo-btn seo-btn-primary" id="btn-save-smtp" onclick="saveSmtp()">Guardar contraseña de correo</button>
+          </div>
+        </div>
+        <div class="seo-form-error" id="smtp-error"></div>
       </div>
 
     </div>
@@ -329,6 +340,7 @@
       document.getElementById('f-last-name').value = user.last_name || '';
       document.getElementById('f-email').value = user.email;
       setAvatarEl(document.getElementById('account-avatar-el'), user);
+      renderSmtpState(user.has_smtp_password);
     }
 
     /* ── Avatar upload ── */
@@ -378,7 +390,7 @@
       if (!cur || !nw) { showError('pw-error', 'Completa todos los campos.'); return; }
       if (nw !== cnf) { showError('pw-error', 'Las contraseñas nuevas no coinciden.'); return; }
       if (nw.length < 6) { showError('pw-error', 'La nueva contraseña debe tener al menos 6 caracteres.'); return; }
-      setBtnLoading('btn-save-pw', true, 'Guardar contraseña');
+      setBtnLoading('btn-save-pw', true, 'Cambiar contraseña');
       try {
         const res = await fetch(`${API_BASE}/api/users/me/profile`, {
           method: 'PUT',
@@ -390,7 +402,45 @@
         document.getElementById('f-new-pw').value = '';
         document.getElementById('f-confirm-pw').value = '';
       } catch(e) { showError('pw-error', 'Error de red.'); }
-      finally { setBtnLoading('btn-save-pw', false, 'Guardar contraseña'); }
+      finally { setBtnLoading('btn-save-pw', false, 'Cambiar contraseña'); }
+    }
+
+    /* ── SMTP state helpers ── */
+    function renderSmtpState(hasPassword) {
+      const saved = document.getElementById('smtp-saved-row');
+      const input = document.getElementById('smtp-input-row');
+      if (hasPassword) {
+        saved.style.display = 'flex';
+        input.style.display = 'none';
+      } else {
+        saved.style.display = 'none';
+        input.style.display = '';
+        document.getElementById('btn-cancel-smtp').style.display = 'none';
+      }
+    }
+    function showSmtpInput() {
+      document.getElementById('smtp-saved-row').style.display = 'none';
+      document.getElementById('smtp-input-row').style.display = '';
+      document.getElementById('btn-cancel-smtp').style.display = '';
+      document.getElementById('f-smtp-pw').focus();
+    }
+    function cancelSmtpInput() {
+      document.getElementById('f-smtp-pw').value = '';
+      clearError('smtp-error');
+      renderSmtpState(true);
+    }
+    async function clearSmtp() {
+      if (!confirm('¿Borrar la contraseña de correo guardada?')) return;
+      clearError('smtp-error');
+      try {
+        const res = await fetch(`${API_BASE}/api/users/me/profile`, {
+          method: 'PUT',
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ clear_smtp_password: true }),
+        });
+        if (!res.ok) { const d = await res.json().catch(()=>({})); showError('smtp-error', d.detail || 'Error al borrar.'); return; }
+        renderSmtpState(false);
+      } catch(e) { showError('smtp-error', 'Error de red.'); }
     }
 
     /* ── Save SMTP password ── */
@@ -407,6 +457,7 @@
         });
         if (!res.ok) { const d = await res.json().catch(()=>({})); showError('smtp-error', d.detail || 'Error al guardar.'); return; }
         document.getElementById('f-smtp-pw').value = '';
+        renderSmtpState(true);
       } catch(e) { showError('smtp-error', 'Error de red.'); }
       finally { setBtnLoading('btn-save-smtp', false, 'Guardar contraseña de correo'); }
     }

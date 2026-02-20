@@ -30,3 +30,7 @@ class User(Base):
     created_at: Mapped[datetime.datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
+
+    @property
+    def has_smtp_password(self) -> bool:
+        return bool(self.smtp_password)

@@ -25,6 +25,7 @@ class UserOut(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     avatar: Optional[str] = None
+    has_smtp_password: bool = False
     is_active: bool
     role: RoleOut
     created_at: datetime.datetime

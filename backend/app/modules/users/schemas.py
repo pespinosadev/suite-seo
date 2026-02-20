@@ -46,3 +46,4 @@ class UpdateProfileRequest(BaseModel):
     current_password: Optional[str] = None
     new_password: Optional[str] = None
     smtp_password: Optional[str] = None
+    clear_smtp_password: bool = False
