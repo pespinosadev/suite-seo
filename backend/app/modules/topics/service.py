@@ -246,6 +246,7 @@ async def send_topics_email(
     subject: str,
     html_body: str,
     db: AsyncSession,
+    sender_email: str = "",
 ) -> None:
     from app.core.config import settings
 
@@ -260,6 +261,8 @@ async def send_topics_email(
     msg["Subject"] = subject
     msg["From"] = from_addr
     msg["To"] = ", ".join(recipients)
+    if sender_email:
+        msg["Reply-To"] = sender_email
     msg.attach(MIMEText(html_body, "html", "utf-8"))
 
     host, port = settings.SMTP_HOST, settings.SMTP_PORT

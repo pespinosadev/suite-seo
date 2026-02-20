@@ -135,7 +135,10 @@ async def delete_topic(
 async def send_email(
     body: schemas.SendEmailRequest,
     db: AsyncSession = Depends(get_db),
-    _=Depends(get_current_user),
+    current_user=Depends(get_current_user),
 ):
-    await service.send_topics_email(body.recipients, body.subject, body.html_body, db)
+    await service.send_topics_email(
+        body.recipients, body.subject, body.html_body, db,
+        sender_email=current_user.email,
+    )
     return {"ok": True}
